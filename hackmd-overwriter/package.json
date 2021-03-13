@@ -1,0 +1,14 @@
+{
+  "name": "hackmd-write-stream",
+  "version": "1.0.0",
+  "description": "HackMD write tools",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "ZoneTwelve",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "puppeteer": "^8.0.0"
+  }
+}
