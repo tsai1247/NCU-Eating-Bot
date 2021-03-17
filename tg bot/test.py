@@ -1,11 +1,13 @@
-import telebot
-bot = telebot.TeleBot('1562606203:AAHpn9Z3DNjQcoqdGDujSLnm53ji2_AjNsM')
-@bot.message_handler(commands=['start'])
-def handle_command(message):
-    bot.reply_to(message, "Hello, welcome to Telegram Bot!")
+from telegram.ext import Updater, CommandHandler
 
-bot.polling()
+def hello(update, bot):
+    update.message.reply_text(
+        'hello, {}'.format(update.message.from_user.first_name))
 
 
+updater = Updater('1562606203:AAHpn9Z3DNjQcoqdGDujSLnm53ji2_AjNsM')
 
-# '1562606203:AAHpn9Z3DNjQcoqdGDujSLnm53ji2_AjNsM'
+updater.dispatcher.add_handler(CommandHandler('hello', hello))
+
+updater.start_polling()
+updater.idle()
