@@ -16,7 +16,7 @@ def isempty(st):
     num = st.count(' ')+st.count('\n')+st.count(':')+st.count('-')
     return (num==len(st))
 
-def getMenu(shopname):
+def getMenu(shopname):  # return a list including all menus to shopname
     code = getcode()
     urls = code.split('### ' + shopname)[1].split('###')[0].split('![]')
     lst = []
@@ -25,18 +25,18 @@ def getMenu(shopname):
         lst.append(pic)
     return lst
 
-def getcode():
+def getcode():  # get all hackmd contents
   response = requests.get(url)
   sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
   code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
   return code
 
-def getlist():
+def getlist():  # return the table of "索引" on hackmd
     code = getcode()
     list = code.split('## 索引')[1].split('## 宵夜街')[0]
     return list
 
-def getshops():
+def getshops():   # return a list including all shops
     tmp = getlist().split('|')[6:-1]
     list = []
     for i in tmp:
@@ -68,7 +68,7 @@ def help(update, bot):
         '/help : get this document.\n'
         '/random : get a random restaurant menu.\n'
         '/search : search a menu.\n'
-        '/add : add new menu.\n'
+        '/add : add new menu(not done).\n'
     )
     # bot.send_photo(
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
@@ -81,7 +81,7 @@ def help_zh(update, bot):
         '/helpzh : 查看此說明。\n'
         '/random : 隨機取得一個菜單。\n'
         '/search : 查詢菜單。\n'
-        '/add : 新增菜單。\n'
+        '/add : 新增菜單(未完成)。\n'
     )
 
 def randomfunc(update, bot):
