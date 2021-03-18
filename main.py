@@ -114,12 +114,16 @@ def search(update, bot):
 
 def filtermsg(update, bot):
     chat_id = update.message.chat_id
-    update.message.reply_text(
-        update.message.text + ' hihi~~ ' # + (str)(chat_id)
-    )
-    # bot.send_photo(
-    #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
-
+    text = update.message.text
+    try:
+        state = status[chat_id]
+        if(state == 'search'):
+            list = getshops(url)
+            print(list)
+        del(status[chat_id])
+        print('status:', status)
+    except KeyError:
+        print('ignore it')
 
 # Main
 def main():
