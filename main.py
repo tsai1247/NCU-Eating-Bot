@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding=UTF-8
 import random
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
