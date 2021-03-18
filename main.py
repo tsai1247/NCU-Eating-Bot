@@ -17,13 +17,14 @@ def isempty(st):
     return (num==len(st))
 
 def getMenu(shopname):
-    code = getcode(url)
-    urls = code.split('### ' + shopname)[1].split('###')[0]
+    code = getcode()
+    urls = code.split('### ' + shopname)[1].split('###')[0].split('![]')
     lst = []
-    for i in urls.split('![]'):
-        lst.append(i.split('(')[1].split(' =400x')[0])
+    for i in range(1, len(urls)):
+        pic = urls[i].split('(')[1].split(')')[0]
+        lst.append(pic)
     return lst
-    
+
 def getcode():
   response = requests.get(url)
   sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
@@ -110,8 +111,8 @@ def randomfunc(update, bot):
     )))
     
 def add(update, bot):
-    print('add')
-
+    pass
+    
 
 def search(update, bot):
     chat_id = update.message.chat_id
@@ -128,7 +129,7 @@ def filtermsg(update, bot):
     try:
         state = status[chat_id]
         if(state == 'search'):
-            list = getshops(url)
+            list = getshops()
             try:
                 list.index(text)
                 curMenu = getMenu(text)
@@ -140,7 +141,6 @@ def filtermsg(update, bot):
                 update.message.reply_text(
                     '此店家不存在'
                 )
-            print(list)
 
         del(status[chat_id])
         print('status:', status)
