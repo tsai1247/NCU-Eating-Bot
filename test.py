@@ -1,7 +1,9 @@
+import random
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
 
 url = 'https://hackmd.io/Tz5EFYy-T-Sp9LqpvJkGLg?edit'
+status = {}
 
 def getcode(hackmdurl):
   response = requests.get(hackmdurl)
@@ -10,17 +12,60 @@ def getcode(hackmdurl):
   return code
 
 # TODO: the functions corresponding to each keyword
-def hello(update, bot):
+
+def start(update, bot):
+    curName =  update.message.from_user.username
     update.message.reply_text(
-        'hello, {}'.format(update.message.from_user.first_name))
+        'Hello, ' +
+        curName +
+        '.'
+    )
+    update.message.reply_text(
+        'I am just a Eating Bot.'
+    )
+    help(update, bot)
+    # bot.send_photo(
+    #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
 
 def help(update, bot):
    
-    update.message.reply_photo(
-        'https://i.imgur.com/C4UDohi.jpg'
+    update.message.reply_text(
+        'The followings are some commands: \n'
+        '/helpzh : 查看中文說明\n'
+        '/help : get this imformation.\n'
+        '/random : get a random restaurant menu.\n'
     )
     # bot.send_photo(
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
+
+def help_zh(update, bot):
+   
+    update.message.reply_text(
+        '以下是常用的指令: \n'
+        '/helpzh : 查看此說明。\n'
+        '/help : 查看英文版說明。\n'
+        '/random : 隨機取得一個菜單。\n'
+    )
+    # bot.send_photo(
+    #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
+
+def randomfunc(update, bot):
+   
+    def random_menu(code):
+        rd = code.split('###')
+        ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
+        return ret
+
+    rand_shop = random_menu(getcode(url))
+    
+    update.message.reply_text(
+        rand_shop
+    )
+
+
+    # bot.send_photo(
+    #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
+
 
 def filtermsg(update, bot):
     chat_id = update.message.chat_id
@@ -37,9 +82,10 @@ def main():
     
 
 # TODO: declaration of keywords
-    updater.dispatcher.add_handler(CommandHandler('hello', hello))
-    updater.dispatcher.add_handler(CommandHandler('start', help))
+    updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CommandHandler('help', help))
+    updater.dispatcher.add_handler(CommandHandler('helpzh', help_zh))
+    updater.dispatcher.add_handler(CommandHandler('random', randomfunc))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
 
     updater.start_polling()
