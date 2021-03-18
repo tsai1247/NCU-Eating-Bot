@@ -16,19 +16,27 @@ def isempty(st):
     num = st.count(' ')+st.count('\n')+st.count(':')+st.count('-')
     return (num==len(st))
 
-def getcode(hackmdurl):
-  response = requests.get(hackmdurl)
+def getMenu(shopname):
+    code = getcode(url)
+    urls = code.split('### ' + shopname)[1].split('###')[0]
+    lst = []
+    for i in urls.split('![]'):
+        lst.append(i.split('(')[1].split(' =400x')[0])
+    return lst
+    
+def getcode():
+  response = requests.get(url)
   sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
   code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
   return code
 
-def getlist(hackmdurl):
-    code = getcode(hackmdurl)
+def getlist():
+    code = getcode()
     list = code.split('## 索引')[1].split('## 宵夜街')[0]
     return list
 
-def getshops(hackmdurl):
-    tmp = getlist(hackmdurl).split('|')[6:-1]
+def getshops():
+    tmp = getlist().split('|')[6:-1]
     list = []
     for i in tmp:
         if(not isempty(i)):
@@ -57,7 +65,9 @@ def help(update, bot):
         'The followings are some commands: \n'
         '/helpzh : 查看中文說明\n'
         '/help : get this document.\n'
-        '/random : get a random menu.\n'
+        '/random : get a random restaurant menu.\n'
+        '/search : search a menu.\n'
+        '/add : add new menu.\n'
     )
     # bot.send_photo(
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
@@ -66,12 +76,12 @@ def help_zh(update, bot):
    
     update.message.reply_text(
         '以下是常用的指令: \n'
-        '/helpzh : 查看此說明。\n'
         '/help : English document\n'
+        '/helpzh : 查看此說明。\n'
         '/random : 隨機取得一個菜單。\n'
+        '/search : 查詢菜單。\n'
+        '/add : 新增菜單。\n'
     )
-    # bot.send_photo(
-    #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
 
 def randomfunc(update, bot):
    
@@ -119,7 +129,19 @@ def filtermsg(update, bot):
         state = status[chat_id]
         if(state == 'search'):
             list = getshops(url)
+            try:
+                list.index(text)
+                curMenu = getMenu(text)
+                for i in curMenu:
+                    update.message.reply_photo(
+                        i
+                    )
+            except ValueError:
+                update.message.reply_text(
+                    '此店家不存在'
+                )
             print(list)
+
         del(status[chat_id])
         print('status:', status)
     except KeyError:
