@@ -1,10 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=UTF-8
 import random
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
+import os
+from dotenv import load_dotenv
 
-url = 'https://hackmd.io/Tz5EFYy-T-Sp9LqpvJkGLg?edit'
+load_dotenv() # Loading environment variable from .env file
+
+url = os.getenv("MD_SOURCE")
 status = {}
 
 def getcode(hackmdurl):
@@ -45,7 +49,7 @@ def help_zh(update, bot):
     update.message.reply_text(
         '以下是常用的指令: \n'
         '/helpzh : 查看此說明。\n'
-        '/help : 查看英文版說明。\n'
+        '/help : English document\n'
         '/random : 隨機取得一個菜單。\n'
     )
     # bot.send_photo(
@@ -83,7 +87,7 @@ def randomfunc(update, bot):
 def filtermsg(update, bot):
     chat_id = update.message.chat_id
     update.message.reply_text(
-        update.message.text + ' hihi~~ ' + (str)(chat_id)
+        update.message.text + ' hihi~~ ' # + (str)(chat_id)
     )
     # bot.send_photo(
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
@@ -91,7 +95,7 @@ def filtermsg(update, bot):
 
 # Main
 def main():
-    updater = Updater('1562606203:AAHpn9Z3DNjQcoqdGDujSLnm53ji2_AjNsM')
+    updater = Updater( os.getenv("TELEGRAM_TOKEN") )
     
 
 # TODO: declaration of keywords
