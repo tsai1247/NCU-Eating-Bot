@@ -55,12 +55,23 @@ def randomfunc(update, bot):
         rd = code.split('###')
         ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
         return ret
+    def sort(rand_shop):
+        cur = rand_shop.split('![]')
+        for i in range(1, len(cur)):
+            cur[i] = cur[i].split('(')[1].split(' =400x')[0]
+        return cur
+    def push_menu(sorted_shop):
+        update.message.reply_text(
+            sorted_shop[0]
+        )
+        for i in range(1, len(sorted_shop)):
+            update.message.reply_photo(
+                sorted_shop[i]
+            )
 
-    rand_shop = random_menu(getcode(url))
+    push_menu(sort(random_menu(getcode(url))))
     
-    update.message.reply_text(
-        rand_shop
-    )
+
 
 
     # bot.send_photo(
