@@ -38,8 +38,8 @@ def help(update, bot):
     update.message.reply_text(
         'The followings are some commands: \n'
         '/helpzh : 查看中文說明\n'
-        '/help : get this imformation.\n'
-        '/random : get a random restaurant menu.\n'
+        '/help : get this document.\n'
+        '/random : get a random menu.\n'
     )
     # bot.send_photo(
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
