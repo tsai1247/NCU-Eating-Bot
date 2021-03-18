@@ -11,11 +11,29 @@ load_dotenv() # Loading environment variable from .env file
 url = os.getenv("MD_SOURCE")
 status = {}
 
+
+def isempty(st):
+    num = st.count(' ')+st.count('\n')+st.count(':')+st.count('-')
+    return (num==len(st))
+
 def getcode(hackmdurl):
   response = requests.get(hackmdurl)
   sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
   code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
   return code
+
+def getlist(hackmdurl):
+    code = getcode(hackmdurl)
+    list = code.split('## 索引')[1].split('## 宵夜街')[0]
+    return list
+
+def getshops(hackmdurl):
+    tmp = getlist(hackmdurl).split('|')[6:-1]
+    list = []
+    for i in tmp:
+        if(not isempty(i)):
+            list.append(i.split('[')[1].split(']')[0])
+    return list
 
 # TODO: the functions corresponding to each keyword
 
@@ -75,13 +93,23 @@ def randomfunc(update, bot):
                 sorted_shop[i]
             )
 
-    push_menu(sort(random_menu(getcode(url))))
+    push_menu(
+        sort(
+            random_menu(
+                getcode(url)
+    )))
     
+def add(update, bot):
+    print('add')
 
 
-
-    # bot.send_photo(
-    #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
+def search(update, bot):
+    chat_id = update.message.chat_id
+    status[chat_id] = "search"
+    update.message.reply_text(
+        '請輸入店家名稱'
+    )
+    print('status:', status)
 
 
 def filtermsg(update, bot):
@@ -103,6 +131,8 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_handler(CommandHandler('helpzh', help_zh))
     updater.dispatcher.add_handler(CommandHandler('random', randomfunc))
+    updater.dispatcher.add_handler(CommandHandler('add', add))
+    updater.dispatcher.add_handler(CommandHandler('search', search))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
 
     updater.start_polling()
