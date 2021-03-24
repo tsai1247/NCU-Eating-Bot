@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 import random
+from requests.models import parse_header_links
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import requests
 import os
 from dotenv import load_dotenv
+import json
+import pyimgur
 
+
+
+# preparation
 load_dotenv() # Loading environment variable from .env file
-
 url = os.getenv("MD_SOURCE")
 status = {}
 
@@ -107,7 +112,7 @@ def randomfunc(update, bot):
     push_menu(
         sort(
             random_menu(
-                getcode(url)
+                getcode()
     )))
     
 def add(update, bot):
@@ -121,7 +126,6 @@ def search(update, bot):
         '請輸入店家名稱'
     )
     print('status:', status)
-
 
 def filtermsg(update, bot):
     chat_id = update.message.chat_id
@@ -147,10 +151,40 @@ def filtermsg(update, bot):
     except KeyError:
         print('ignore it')
 
+def whengetphoto(update, bot):  
+    photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.photo[0].file_id
+    photoresponse =  json.loads(requests.get(photorequesturl).content.decode())
+    file_path = photoresponse['result']['file_path']
+    # when error 404?
+    photorequesturl = 'https://api.telegram.org/file/bot' + os.getenv("TELEGRAM_TOKEN") + '/' + file_path
+    photo = requests.get(photorequesturl).content
+    fp = open("tmpphoto.png", "wb")
+    fp.write(photo)
+    fp.close()
+    
+    CLIENT_ID = os.getenv("IMGUR_CLIENT_ID")
+    PATH = "tmpphoto.png"
+    title = "Uploaded with PyImgur"
+    im = pyimgur.Imgur(CLIENT_ID)
+    uploaded_image = im.upload_image(PATH, title=title)
+    print(uploaded_image.title)
+    print(uploaded_image.link)
+    print(uploaded_image.type)
+    
+    fp = open("filename.txt", "w")
+    fp.write('![](' + uploaded_image.link + ')\n')
+    fp.close()
+    
+    command = "modules\\hackmd-overwriter\\bin\\overwrite.cmd " + os.getenv("MD_SOURCE") + ' filename.txt'
+    print(command, end='\n\n')
+    os.system(command)
+    
+
+
+    print('here')
 # Main
 def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
-    
 
 # TODO: declaration of keywords
     updater.dispatcher.add_handler(CommandHandler('start', start))
@@ -160,6 +194,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('add', add))
     updater.dispatcher.add_handler(CommandHandler('search', search))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
+    updater.dispatcher.add_handler(MessageHandler(Filters.photo, whengetphoto))
 
     updater.start_polling()
     updater.idle()
