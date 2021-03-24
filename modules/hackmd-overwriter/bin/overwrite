@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 const hackmd = require("../index");
-const target = process.argv[2];
-const mdPath = process.argv[3];
+const target = process.argv[2]; // url
+const mdPath = process.argv[3]; // file path
 hackmd.overwrite( { url:target, md:mdPath } );
