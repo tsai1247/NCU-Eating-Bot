@@ -97,7 +97,6 @@ def filtermsg(update, bot):
 def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
     
-
 # TODO: declaration of keywords
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CommandHandler('help', help))
@@ -107,6 +106,10 @@ def main():
 
     updater.start_polling()
     updater.idle()
+
+# TODO: loading command from directory files
+# like: for script in commandScript:
+#         updater.dispatche.add_handler( COmmandHandler( script.keyword, script.function ) )-
 
 if __name__ == '__main__':
     main()
