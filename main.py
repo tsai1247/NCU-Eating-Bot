@@ -141,7 +141,7 @@ def getMenu(shopname):  # return a list including all menus to shopname
     urls = code.split('### ' + shopname)[1].split('###')[0].split('![]')
     lst = []
     for i in range(1, len(urls)):
-        pic = urls[i].split('(')[1].split(')')[0]
+        pic = urls[i].split('(')[1].split(' =400x)')[0]
         lst.append(pic)
     return lst
 
