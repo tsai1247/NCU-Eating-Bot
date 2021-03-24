@@ -1,25 +1,139 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 import random
+from warnings import catch_warnings
 from requests.models import parse_header_links
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 import requests
 import os
 from dotenv import load_dotenv
 import json
 import pyimgur
-
-
+import codecs
 
 # preparation
 load_dotenv() # Loading environment variable from .env file
 url = os.getenv("MD_SOURCE")
 status = {}
+add_query_classification = {}
+add_query_shopname = {}
+classMap = {'宵夜街':2, '後門':3, '奢侈接':4, '山下':5}
 
+def updateHackmd(classification, shopname, photolink):
+    
+    def GetReverseMenu(curMenu):
+        midpath = []
+        for i in range(len(curMenu[0])):
+            midpath.append([])
+
+        for i in curMenu:
+            # print(i)
+            for j in range(len(i)):
+            # print('>', j)
+                midpath[j].append(i[j])
+        return midpath
+
+    def getMDtable(reverseMenu):
+        ret = ''
+        for i in reverseMenu:
+            ret+='|'
+            for j in i:
+               ret+= j + '|'
+            ret+='\n'
+
+        return ret
+    
+    def updateIndex(code, index):
+        undealtlist = code.split('|')[1:]
+
+        dealtlist = []
+        for i in range(int(len(undealtlist)/5)):
+            dealtlist.append([])
+            for j in range(4):
+                dealtlist[-1].append(undealtlist[i*5+j])
+
+        reverseMenu = GetReverseMenu(dealtlist)
+        
+        for i in range(len(reverseMenu[index])):
+            if(reverseMenu[index][i]==''):
+                reverseMenu[index][i]= '[{}](##{})'.format(shopname, shopname)
+                break
+            elif i+1==len(reverseMenu[index]):
+                reverseMenu[index].append('[{}](##{})'.format(shopname, shopname))
+                for j in range(4):
+                    if(j!=index):
+                        reverseMenu[j].append('')
+        
+        reverseMenu = GetReverseMenu(reverseMenu)
+        
+        ret = getMDtable(reverseMenu)
+        return ret
+
+    def updatePhoto(code):
+        code += '### {}\n![]({} =400x)\n\n'.format(shopname, photolink)
+        return code
+    
+    print(getcode())
+    code = split(getcode()) # len = 6
+                            # 菜單 索引 宵夜街 後門 奢侈街 山下
+    index = classMap[classification]
+    code[1] = updateIndex(code[1], index-2)
+    code[index] = updatePhoto(code[index])
+    newcode = ''
+    for i in code:
+        newcode += i
+    
+    fp = codecs.open("filename.txt", "w", "utf-8")
+    fp.write(newcode)
+    fp.close()
+    
+    command = "modules\\hackmd-overwriter\\bin\\overwrite.cmd " + os.getenv("MD_SOURCE") + ' filename.txt'
+    os.system(command)
+
+
+def uploadAndGetPhoto(photorequesturl):
+    photoresponse =  json.loads(requests.get(photorequesturl).content.decode())
+    file_path = photoresponse['result']['file_path']
+    # when error 404?
+    photorequesturl = 'https://api.telegram.org/file/bot' + os.getenv("TELEGRAM_TOKEN") + '/' + file_path
+    photo = requests.get(photorequesturl).content
+    fp = open("tmpphoto.png", "wb")
+    fp.write(photo)
+    fp.close()
+    
+    CLIENT_ID = os.getenv("IMGUR_CLIENT_ID")
+    PATH = "tmpphoto.png"
+    title = "Uploaded with PyImgur"
+    im = pyimgur.Imgur(CLIENT_ID)
+    uploaded_image = im.upload_image(PATH, title=title)
+    return uploaded_image.link
 
 def isempty(st):
     num = st.count(' ')+st.count('\n')+st.count(':')+st.count('-')
     return (num==len(st))
+
+def split(code):
+    ret = []
+    tmp = code
+
+    ret.append(tmp.split('## 索引')[0])
+    tmp = '## 索引' + tmp.split('## 索引')[1]
+
+    ret.append(tmp.split('## 宵夜街')[0])
+    tmp = '## 宵夜街' + tmp.split('## 宵夜街')[1]
+
+    ret.append(tmp.split('## 後門')[0])
+    tmp = '## 後門' + tmp.split('## 後門')[1]
+
+    ret.append(tmp.split('## 奢侈街')[0])
+    tmp = '## 奢侈街' + tmp.split('## 奢侈街')[1]
+
+    ret.append(tmp.split('## 山下')[0])
+    tmp = '## 山下' + tmp.split('## 山下')[1]
+
+    ret.append(tmp)
+    return ret
 
 def getMenu(shopname):  # return a list including all menus to shopname
     code = getcode()
@@ -116,11 +230,28 @@ def randomfunc(update, bot):
     )))
     
 def add(update, bot):
-    pass
-    
+    chat_id = str(update.message.chat_id)
+    # status[chat_id] = "add_step1"
+
+    # update.message.reply_text(
+    #     '請輸入店家名稱'
+    # )
+    update.message.reply_text("請選擇分類",
+        reply_markup = InlineKeyboardMarkup([[
+                InlineKeyboardButton(s, callback_data = '{} {}'.format(s, chat_id)) for s in ['宵夜街', '後門', '奢侈街', '山下']
+            ]]))
+
+    print('status:', status)
+
+def getClassification(update, bot):
+    s, chat_id = update.callback_query.data.split(" ")
+    update.callback_query.edit_message_text('分類為：{}\n請輸入店家名稱'.format(s))
+    status[chat_id] = "add_step1"
+    add_query_classification[chat_id] = s
+    print('status:', status)
 
 def search(update, bot):
-    chat_id = update.message.chat_id
+    chat_id = str(update.message.chat_id)
     status[chat_id] = "search"
     update.message.reply_text(
         '請輸入店家名稱'
@@ -128,11 +259,11 @@ def search(update, bot):
     print('status:', status)
 
 def filtermsg(update, bot):
-    chat_id = update.message.chat_id
+    chat_id = str(update.message.chat_id)
     text = update.message.text
     try:
         state = status[chat_id]
-        if(state == 'search'):
+        if state == 'search':
             list = getshops()
             try:
                 list.index(text)
@@ -145,43 +276,48 @@ def filtermsg(update, bot):
                 update.message.reply_text(
                     '此店家不存在'
                 )
+            del(status[chat_id])
+        elif state == 'add_step1':
+            del(status[chat_id])
+            status[chat_id] = "add_step2"
+            add_query_shopname[chat_id] = text
+            update.message.reply_text(
+                '新增店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id])
+            )
+        elif state == 'add_step2':
+            del(status[chat_id])
+            status[chat_id] = "add_step2"
+            del(add_query_shopname[chat_id])
+            add_query_shopname[chat_id] = text
+            update.message.reply_text(
+                '新增店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id])
+            )
 
-        del(status[chat_id])
+            
         print('status:', status)
     except KeyError:
         print('ignore it')
 
 def whengetphoto(update, bot):  
-    photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.photo[0].file_id
-    photoresponse =  json.loads(requests.get(photorequesturl).content.decode())
-    file_path = photoresponse['result']['file_path']
-    # when error 404?
-    photorequesturl = 'https://api.telegram.org/file/bot' + os.getenv("TELEGRAM_TOKEN") + '/' + file_path
-    photo = requests.get(photorequesturl).content
-    fp = open("tmpphoto.png", "wb")
-    fp.write(photo)
-    fp.close()
-    
-    CLIENT_ID = os.getenv("IMGUR_CLIENT_ID")
-    PATH = "tmpphoto.png"
-    title = "Uploaded with PyImgur"
-    im = pyimgur.Imgur(CLIENT_ID)
-    uploaded_image = im.upload_image(PATH, title=title)
-    print(uploaded_image.title)
-    print(uploaded_image.link)
-    print(uploaded_image.type)
-    
-    fp = open("filename.txt", "w")
-    fp.write('![](' + uploaded_image.link + ')\n')
-    fp.close()
-    
-    command = "modules\\hackmd-overwriter\\bin\\overwrite.cmd " + os.getenv("MD_SOURCE") + ' filename.txt'
-    print(command, end='\n\n')
-    os.system(command)
-    
 
-
-    print('here')
+    chat_id = str(update.message.chat_id)
+    try:
+        state = status[chat_id]
+        if state == 'add_step2':
+            photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.photo[0].file_id
+            photolink = uploadAndGetPhoto(photorequesturl) 
+            update.message.reply_text(
+                '正在新增店家...'
+            )
+            updateHackmd(add_query_classification[chat_id], add_query_shopname[chat_id], photolink)
+            update.message.reply_text(
+                '新增店家 {} 於分類 {}, 新增完成。'.format(add_query_shopname[chat_id], add_query_classification[chat_id])
+            )
+            del(status[chat_id])
+        print('status:', status)
+    except KeyError:
+        print('ignore it')
+    
 # Main
 def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
@@ -195,6 +331,8 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('search', search))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
     updater.dispatcher.add_handler(MessageHandler(Filters.photo, whengetphoto))
+    updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
+
 
     updater.start_polling()
     updater.idle()
