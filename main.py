@@ -98,6 +98,7 @@ def uploadAndGetPhoto(photorequesturl):
     file_path = photoresponse['result']['file_path']
     # when error 404?
     photorequesturl = 'https://api.telegram.org/file/bot' + os.getenv("TELEGRAM_TOKEN") + '/' + file_path
+    print(photorequesturl)
     photo = requests.get(photorequesturl).content
     fp = open("tmpphoto.png", "wb")
     fp.write(photo)
@@ -318,6 +319,32 @@ def whengetphoto(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
+
+def whengetfile(update, bot):  
+    photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.document.file_id
+    photolink = uploadAndGetPhoto(photorequesturl) 
+    update.message.reply_text(
+        '正在新增店家...'
+    )
+    
+    chat_id = str(update.message.chat_id)
+    try:
+        state = status[chat_id]
+        if state == 'add_step2':
+            photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.document.file_id
+            photolink = uploadAndGetPhoto(photorequesturl) 
+            update.message.reply_text(
+                '正在新增店家...'
+            )
+            updateHackmd(add_query_classification[chat_id], add_query_shopname[chat_id], photolink)
+            update.message.reply_text(
+                '新增店家 {} 於分類 {}, 新增完成。'.format(add_query_shopname[chat_id], add_query_classification[chat_id])
+            )
+            del(status[chat_id])
+        print('status:', status)
+    except KeyError:
+        print('ignore it')
+
     
 # Main
 def main():
@@ -332,6 +359,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('search', search))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
     updater.dispatcher.add_handler(MessageHandler(Filters.photo, whengetphoto))
+    updater.dispatcher.add_handler(MessageHandler(Filters.document, whengetfile))
     updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
 
 
