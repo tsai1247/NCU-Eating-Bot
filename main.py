@@ -68,6 +68,7 @@ def updateHackmd(classification, shopname, photolink):
         reverseMenu = GetReverseMenu(reverseMenu)
         
         ret = getMDtable(reverseMenu)
+        ret = '## 索引\n' + ret
         return ret
 
     def updatePhoto(code):
