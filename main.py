@@ -210,7 +210,7 @@ def help(update, bot):
         '/help : get this document.\n'
         '/random : get a random restaurant menu.\n'
         '/search : search a menu.\n'
-        '/add : add new menu(not done).\n'
+        '/add : add new menu.\n'
     )
 
 def help_zh(update, bot):
@@ -221,7 +221,7 @@ def help_zh(update, bot):
         '/helpzh : 查看此說明。\n'
         '/random : 隨機取得一個菜單。\n'
         '/search : 查詢菜單。\n'
-        '/add : 新增菜單(未完成)。\n'
+        '/add : 新增菜單。\n'
     )
 
 
