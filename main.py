@@ -20,8 +20,7 @@ add_query_classification = {}
 add_query_shopname = {}
 classMap = {'宵夜街':2, '後門':3, '奢侈接':4, '山下':5}
 
-def updateHackmd(classification, shopname, photolink):
-    
+def updateHackmd(chat_id, classification, shopname, photolink):
     def GetReverseMenu(curMenu):
         midpath = []
         for i in range(len(curMenu[0])):
@@ -74,8 +73,8 @@ def updateHackmd(classification, shopname, photolink):
     def updatePhoto(code):
         code += '### {}\n![]({} =400x)\n\n'.format(shopname, photolink)
         return code
-    
-    print(getcode())
+    del(add_query_classification[chat_id])
+    del(add_query_shopname[chat_id])  
     code = split(getcode()) # len = 6
                             # 菜單 索引 宵夜街 後門 奢侈街 山下
     index = classMap[classification]
@@ -266,6 +265,7 @@ def filtermsg(update, bot):
     try:
         state = status[chat_id]
         if state == 'search':
+            del(status[chat_id])
             list = getshops()
             try:
                 list.index(text)
@@ -278,7 +278,6 @@ def filtermsg(update, bot):
                 update.message.reply_text(
                     '此店家不存在'
                 )
-            del(status[chat_id])
         elif state == 'add_step1':
             del(status[chat_id])
             status[chat_id] = "add_step2"
@@ -301,51 +300,71 @@ def filtermsg(update, bot):
         print('ignore it')
 
 def whengetphoto(update, bot):  
-
     chat_id = str(update.message.chat_id)
     try:
         state = status[chat_id]
         if state == 'add_step2':
+            del(status[chat_id])
+            update.message.reply_text(
+                '正在取得照片...'
+            )
             photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.photo[0].file_id
             photolink = uploadAndGetPhoto(photorequesturl) 
             update.message.reply_text(
                 '正在新增店家...'
             )
-            updateHackmd(add_query_classification[chat_id], add_query_shopname[chat_id], photolink)
+            cur_classification = add_query_classification[chat_id]
+            cur_shopname = add_query_shopname[chat_id]
+            updateHackmd(chat_id, cur_classification, cur_shopname, photolink)
             update.message.reply_text(
-                '新增店家 {} 於分類 {}, 新增完成。'.format(add_query_shopname[chat_id], add_query_classification[chat_id])
+                '新增店家 {} 於分類 {}, 新增完成。'.format(cur_classification, cur_shopname)
             )
-            del(status[chat_id])
         print('status:', status)
     except KeyError:
         print('ignore it')
 
 def whengetfile(update, bot):  
-    photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.document.file_id
-    photolink = uploadAndGetPhoto(photorequesturl) 
-    update.message.reply_text(
-        '正在新增店家...'
-    )
-    
     chat_id = str(update.message.chat_id)
     try:
         state = status[chat_id]
         if state == 'add_step2':
+            del(status[chat_id])
+            update.message.reply_text(
+                '正在取得照片...'
+            )
             photorequesturl = 'https://api.telegram.org/bot' + os.getenv("TELEGRAM_TOKEN") + '/getfile?file_id=' + update.message.document.file_id
             photolink = uploadAndGetPhoto(photorequesturl) 
             update.message.reply_text(
                 '正在新增店家...'
             )
-            updateHackmd(add_query_classification[chat_id], add_query_shopname[chat_id], photolink)
+            cur_classification = add_query_classification[chat_id]
+            cur_shopname = add_query_shopname[chat_id]
+            updateHackmd(chat_id, cur_classification, cur_shopname, photolink)
             update.message.reply_text(
-                '新增店家 {} 於分類 {}, 新增完成。'.format(add_query_shopname[chat_id], add_query_classification[chat_id])
+                '新增店家 {} 於分類 {}, 新增完成。'.format(cur_classification, cur_shopname)
             )
-            del(status[chat_id])
         print('status:', status)
     except KeyError:
         print('ignore it')
+def clearallrequest(update, bot):
+    chat_id = str(update.message.chat_id)
+    try:
+        del(status[chat_id])
+    except KeyError:
+        print('ignore it')
+    try:
+        del(add_query_shopname[chat_id])
+    except KeyError:
+        print('ignore it')
+    try:
+        del(add_query_classification[chat_id])
+    except KeyError:
+        print('ignore it')
+    update.message.reply_text(
+        "已清除您的所有要求"
+    )
 
-    
+
 # Main
 def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
@@ -357,6 +376,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('random', randomfunc))
     updater.dispatcher.add_handler(CommandHandler('add', add))
     updater.dispatcher.add_handler(CommandHandler('search', search))
+    updater.dispatcher.add_handler(CommandHandler('clear', clearallrequest))
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
     updater.dispatcher.add_handler(MessageHandler(Filters.photo, whengetphoto))
     updater.dispatcher.add_handler(MessageHandler(Filters.document, whengetfile))
