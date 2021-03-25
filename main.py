@@ -39,8 +39,6 @@ def main():
     # calbackhandler
     updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
 
-
-
     updater.start_polling()
     updater.idle()
 

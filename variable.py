@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv() # Loading environment variable from .env file
 
 url = os.getenv("MD_SOURCE")
 status = {}
