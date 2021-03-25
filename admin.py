@@ -1,4 +1,5 @@
 import codecs
+from interact_with_hackmd import getcode
 from overwrite import *
 from variable import *
 
@@ -17,13 +18,10 @@ def checkpermission(update):
 def backup(update, bot):
     if(not checkpermission(update)):   return
 
-    fp = codecs.open("filename.txt", "r", "utf-8")
-    oldcode = fp.readlines()
-    fp.close()
+    code = getcode()
     
     fp2 = codecs.open("filename_back_up.txt", "w", "utf-8")
-    for i in oldcode:
-        fp2.write(i)
+    fp2.write(code)
     fp2.close()
 
     update.message.reply_text(
