@@ -5,10 +5,12 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 from interact_with_hackmd import *
 from interact_with_imgur import *
+from dosdefence import *
 
 # TODO: the functions corresponding to each keyword
 
 def start(update, bot):
+    if isDos(update): return
     curName =  update.message.from_user.username
     update.message.reply_text(
         'Hello, ' +
@@ -23,7 +25,7 @@ def start(update, bot):
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
 
 def help(update, bot):
-   
+    if isDos(update): return
     update.message.reply_text(
         'The followings are some commands: \n'
         '/helpzh : 查看中文說明\n'
@@ -34,7 +36,7 @@ def help(update, bot):
     )
 
 def help_zh(update, bot):
-   
+    if isDos(update): return
     update.message.reply_text(
         '以下是常用的指令: \n'
         '/help : English document\n'
@@ -45,7 +47,7 @@ def help_zh(update, bot):
     )
 
 def randomfunc(update, bot):
-   
+    if isDos(update): return
     def random_menu(code):
         rd = code.split('###')
         ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
@@ -71,6 +73,7 @@ def randomfunc(update, bot):
     )))
     
 def add(update, bot):
+    if isDos(update): return
     chat_id = str(update.message.chat_id)
     # status[chat_id] = "add_step1"
 
@@ -132,6 +135,7 @@ def getClassification(update, bot):
             )
 
 def search(update, bot):
+    if isDos(update): return
     chat_id = str(update.message.chat_id)
     ori_text = update.message.text
     if(len(ori_text)<=len('/search ')):
@@ -291,6 +295,7 @@ def whengetfile(update, bot):
         print('ignore it')
 
 def addtag(update, bot):
+    if isDos(update): return
     chat_id = update.message.chat_id
     try:
         command, shopname, tag = update.message.text.split()
@@ -329,6 +334,7 @@ def addtag(update, bot):
             )
 
 def listall(update, bot):
+    if isDos(update): return
     list = getshops()
     ret = ''
     count = 0

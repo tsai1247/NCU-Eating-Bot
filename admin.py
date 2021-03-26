@@ -1,10 +1,11 @@
 import codecs
 import json
-
+import time
 from requests import check_compatibility
 from interact_with_hackmd import getcode
 from overwrite import *
 from variable import *
+from dosdefence import *
 
 def checkpermission(update):
     chat_id = str(update.message.chat_id)
@@ -22,6 +23,7 @@ def checkpermission(update):
 
 # functions for commands
 def backup(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     code = getcode()
@@ -35,6 +37,7 @@ def backup(update, bot):
     )
 
 def undo(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     update.message.reply_text(
@@ -48,6 +51,7 @@ def undo(update, bot):
     )
 
 def restore(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     update.message.reply_text(
@@ -61,6 +65,7 @@ def restore(update, bot):
     )
 
 def xhelp(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     update.message.reply_text(
@@ -75,6 +80,7 @@ def xhelp(update, bot):
     )
 
 def xhelpzh(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     update.message.reply_text(
@@ -90,6 +96,7 @@ def xhelpzh(update, bot):
 
 
 def clearallrequest(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     chat_id = str(update.message.chat_id)
@@ -112,6 +119,7 @@ def clearallrequest(update, bot):
     print('status', status)
 
 def addtypo(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     chat_id = str(update.message.chat_id)
@@ -145,7 +153,11 @@ def addtypo(update, bot):
 
 
 def test(update, bot):
+    if isDos(update): return
     if(not checkpermission(update)):   return
 
     chat_id = str(update.message.chat_id)
-    update.send_message(chat_id, "hihi")
+    update.message.reply_text(
+        str(update.message.date)
+    )
+    dos_defence[chat_id] = [1, update.message.date]
