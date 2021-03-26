@@ -12,6 +12,9 @@ def checkpermission(update):
         update.message.reply_text(
             "你沒有使用此指令的權限"
         )
+        update.message.reply_text(
+            "但名豐可以請客"
+        )
         return False
 
 # functions for commands

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 import requests, codecs
 from variable import *
 from overwrite import *
@@ -49,12 +51,13 @@ def updateHackmd(chat_id, classification, shopname, photolink):
         newcode += i
     
     fp = codecs.open("filename.txt", "r", "utf-8")
-    oldcode = fp.readlines
+    oldcode = fp.readlines()
     print(oldcode)
     fp.close()
 
     fp2 = codecs.open("filename_auto_back_up.txt", "w", "utf-8")
-    fp2.write(oldcode)
+    for i in oldcode:
+        fp2.write(i)
     fp2.close()
 
     fp = codecs.open("filename.txt", "w", "utf-8")
