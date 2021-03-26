@@ -142,12 +142,11 @@ def search(update, bot):
     else:
         text = ori_text[len('\\search'):]
         findmenu(text, update)
-
     print('status:', status)
 
 def allin(small, big):
     for i in small:
-        if(not i in big):
+        if(not i in big and i != ' ' and i != '\n'):
             return False
     return True
 
@@ -169,7 +168,7 @@ def findmenu(text, update):
             elif(Levenshtein(shop, text)<2):
                 candi_list.append(shop)
 
-    if('名豐' in text and ('請客' in text or 'treat' in text or 'おご' in text ) and (text.count('不')+text.count('treated') + text.count('被')+text.count('no')+text.count('ない'))%2==0):
+    if('名豐' in text and ('請客' in text or 'treat' in text or 'おご' in text ) and (text.count('不')+text.count('treated') + text.count('被') + text.count('れた') + text.count('no')+text.count('ない'))%2==0):
         candi_list = list
         random.shuffle(candi_list)
     
