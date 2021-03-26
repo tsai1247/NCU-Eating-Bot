@@ -14,6 +14,6 @@ add_query_update = {}
 add_query_photolink = {}
 classMap = {'宵夜街':2, '後門':3, '奢侈接':4, '山下':5}
 
-dos_maximum = 20
+dos_maximum = 25
 penalty = 300
 dos_defence= {}
