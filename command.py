@@ -188,15 +188,18 @@ def findmenu(text, update):
 
     if('名豐' in text and ('請客' in text or 'treat' in text or 'おご' in text ) and (text.count('不')+text.count('treated') + text.count('被') + text.count('れた') + text.count('no')+text.count('ない'))%2==0):
         candi_list = list
-        random.shuffle(candi_list)
     
     if(len(candi_list)>5):
+        random.shuffle(candi_list)
         candi_list = candi_list[0:5]
 
     if(len(candi_list)==0):
         update.message.reply_text(
             '此店家不存在'
         )
+        fp = codecs.open("non-exist-shop.txt", "a", "utf-8")
+        fp.write(text + '\n')
+        fp.close()
     else:
         if(chat_id in add_query_update):
             del(add_query_update[chat_id])

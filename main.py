@@ -30,6 +30,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('backup', backup))
     updater.dispatcher.add_handler(CommandHandler('undo', undo))
     updater.dispatcher.add_handler(CommandHandler('restore', restore))
+    updater.dispatcher.add_handler(CommandHandler('addtypo', addtypo))
 
     # normal messages
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))

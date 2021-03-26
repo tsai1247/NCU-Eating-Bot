@@ -1,4 +1,7 @@
 import codecs
+import json
+
+from requests import check_compatibility
 from interact_with_hackmd import getcode
 from overwrite import *
 from variable import *
@@ -68,6 +71,7 @@ def xhelp(update, bot):
         '/backup : manually backup a hackmd data.\n'
         '/undo : overwrite hackmd data with auto_backup data.\n'
         '/restore : overwrite hackmd data with manual_backup data.\n'
+        '/addtypo correct_text wrong_text : stronger search function.\n'
     )
 
 def xhelpzh(update, bot):
@@ -81,6 +85,7 @@ def xhelpzh(update, bot):
         '/backup : 手動備份資料。\n'
         '/undo : 從上次的自動備份還原菜單。\n'
         '/restore : 從上次的手動備份還原菜單。\n'
+        '/addtypo 正確詞 錯誤詞 : 新增常見錯字資料。\n'
     )
 
 
@@ -105,6 +110,35 @@ def clearallrequest(update, bot):
         "已清除您的所有要求"
     )
     print('status', status)
+
+def addtypo(update, bot):
+    if(not checkpermission(update)):   return
+
+    chat_id = str(update.message.chat_id)
+    correct, wrong = update.message.text[len('\\addtypo '):].split()
+    
+    fp = codecs.open("typo.json", "r", "utf-8")
+    r = json.load(fp)
+    fp.close()
+
+    if correct in r:
+        r[correct].append(wrong)
+    else:
+        r[correct] = wrong
+    r = str(r)
+    r = r.replace("\'", "\"")
+
+    fp = codecs.open("typo.json", "w", "utf-8")
+    fp.write(str(r))
+    fp.close()
+    
+    
+    # for key in r:
+    #     for typo in r[key]:
+    #         while(typo in text):
+    #             index = text.index(typo)
+    #             lens = len(typo)
+    #             text = text[0:index] + key + text[(index+lens):]
 
 
 def test(update, bot):
