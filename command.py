@@ -169,8 +169,12 @@ def findmenu(text, update):
             elif(Levenshtein(shop, text)<2):
                 candi_list.append(shop)
 
-    # if('名豐' in text):
-    #     candi_list = list
+    if('名豐' in text and not '不' in text):
+        candi_list = list
+        random.shuffle(candi_list)
+    
+    if(len(candi_list)>5):
+        candi_list = candi_list[0:5]
 
     if(len(candi_list)==0):
         update.message.reply_text(
