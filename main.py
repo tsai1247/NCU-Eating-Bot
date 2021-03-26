@@ -39,6 +39,7 @@ def main():
     # calbackhandler
     updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
 
+    
     updater.start_polling()
     updater.idle()
 
@@ -53,7 +54,8 @@ reference:
 https://core.telegram.org/bots/api#sendmessage method
     $message = <<<TEXT
     *** your content ***
-    *** somewhere below (or above) a link to your image with invisible character(s) ***
+    *** somew
+    here below (or above) a link to your image with invisible character(s) ***
     <a href="https://www.carspecs.us/photos/c8447c97e355f462368178b3518367824a757327-2000.jpg"> ‏ </a>
     TEXT;
 

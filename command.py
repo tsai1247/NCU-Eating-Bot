@@ -146,11 +146,29 @@ def search(update, bot):
 
 def allin(small, big):
     for i in small:
-        if(not i in big and i != ' ' and i != '\n'):
+        if(not i in big):
             return False
     return True
 
 def findmenu(text, update):
+    def preprocess(text):
+        ignorespace = ''
+        for i in text:
+            if(i!=' ' and i != '\n'):
+                ignorespace+=i
+        fp = codecs.open("typo.json", "r", "utf-8")
+        r = json.load(fp)
+        fp.close()
+        text = ignorespace
+
+        for key in r:
+            for typo in r[key]:
+                while(typo in text):
+                    index = text.index(typo)
+                    lens = len(typo)
+                    text = text[0:index] + key + text[(index+lens):]
+        return text
+    text = preprocess(text)
     chat_id = str(update.message.chat_id)
     list = getshops()
     if text in list:
