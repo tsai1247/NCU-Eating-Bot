@@ -169,7 +169,7 @@ def findmenu(text, update):
             elif(Levenshtein(shop, text)<2):
                 candi_list.append(shop)
 
-    if('名豐' in text and not '不' in text):
+    if('名豐' in text and ('請客' in text or 'create' in text or 'おご' in text ) and (text.count('不')+text.count('被')+text.count('no')+text.count('ない'))%2==0):
         candi_list = list
         random.shuffle(candi_list)
     
