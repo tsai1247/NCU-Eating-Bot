@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
+from warnings import catch_warnings
 import requests, codecs
 from variable import *
 from overwrite import *
@@ -179,3 +180,52 @@ def split(code):
 
     ret.append(tmp)
     return ret
+
+def get_tags(shopname):
+    code = split(getcode())[2:]
+    list = []
+    for i in code:
+        if shopname in i:
+            list = i.split('### ' + shopname)[1].split('###')[0].split('`')[1::2]
+            break
+    return list
+
+def update_tag(shopname, tags):
+    code = split(getcode())
+    list = []
+    newcode = code[0] + code[1]
+    for i in code[2:]:
+        if shopname in i:
+            side_shops = i.split('### ' + shopname)[0] + '### ' + shopname
+            goalshop = i.split('### ' + shopname)[1]
+            goalshop_begin = goalshop.split('###')[0][:-1].split('`')[0]
+            for tag in tags:
+                goalshop_begin += '`' + tag + '` '
+            goalshop_begin += '\n\n'
+            try:
+                goalshop_ends = goalshop.split('###')[1:]
+                goalshop_end = ''
+                for i in goalshop_ends:
+                    goalshop_end += '###' + i
+            except IndexError:
+                goalshop_end = ''
+
+            newcode += side_shops + goalshop_begin + goalshop_end
+        else:
+            newcode += i
+
+    fp = codecs.open("filename.txt", "r", "utf-8")
+    oldcode = fp.readlines()
+    fp.close()
+
+    fp2 = codecs.open("filename_auto_back_up.txt", "w", "utf-8")
+    for i in oldcode:
+        fp2.write(i)
+    fp2.close()
+
+    fp = codecs.open("filename.txt", "w", "utf-8")
+    fp.write(newcode)
+    fp.close()
+
+    overwrite('filename.txt')
+    return

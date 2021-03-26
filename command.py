@@ -134,13 +134,13 @@ def getClassification(update, bot):
 def search(update, bot):
     chat_id = str(update.message.chat_id)
     ori_text = update.message.text
-    if(len(ori_text)<=len('\\search ')):
+    if(len(ori_text)<=len('/search ')):
         status[chat_id] = "search"
         update.message.reply_text(
             '請輸入店家名稱'
         )
     else:
-        text = ori_text[len('\\search'):]
+        text = ori_text[len('/search'):]
         findmenu(text, update)
     print('status:', status)
 
@@ -150,24 +150,25 @@ def allin(small, big):
             return False
     return True
 
-def findmenu(text, update):
-    def preprocess(text):
-        ignorespace = ''
-        for i in text:
-            if(i!=' ' and i != '\n'):
-                ignorespace+=i
-        fp = codecs.open("typo.json", "r", "utf-8")
-        r = json.load(fp)
-        fp.close()
-        text = ignorespace
+def preprocess(text):
+    ignorespace = ''
+    for i in text:
+        if(i!=' ' and i != '\n'):
+            ignorespace+=i
+    text = ignorespace
+    fp = codecs.open("typo.json", "r", "utf-8")
+    r = json.load(fp)
+    fp.close()
 
-        for key in r:
-            for typo in r[key]:
-                while(typo in text):
-                    index = text.index(typo)
-                    lens = len(typo)
-                    text = text[0:index] + key + text[(index+lens):]
-        return text
+    for key in r:
+        for typo in r[key]:
+            while(typo in text):
+                index = text.index(typo)
+                lens = len(typo)
+                text = text[0:index] + key + text[(index+lens):]
+    return text
+
+def findmenu(text, update):
     text = preprocess(text)
     chat_id = str(update.message.chat_id)
     list = getshops()
@@ -186,28 +187,28 @@ def findmenu(text, update):
             elif(Levenshtein(shop, text)<2):
                 candi_list.append(shop)
 
-    if('名豐' in text and ('請客' in text or 'treat' in text or 'おご' in text ) and (text.count('不')+text.count('treated') + text.count('被') + text.count('れた') + text.count('no')+text.count('ない'))%2==0):
-        candi_list = list
-    
-    if(len(candi_list)>5):
-        random.shuffle(candi_list)
-        candi_list = candi_list[0:5]
+        if('名豐' in text and ('請客' in text or 'treat' in text or 'おご' in text ) and (text.count('不')+text.count('treated') + text.count('被') + text.count('れた') + text.count('no')+text.count('ない'))%2==0):
+            candi_list = list
+        
+        if(len(candi_list)>5):
+            random.shuffle(candi_list)
+            candi_list = candi_list[0:5]
 
-    if(len(candi_list)==0):
-        update.message.reply_text(
-            '此店家不存在'
-        )
-        fp = codecs.open("non-exist-shop.txt", "a", "utf-8")
-        fp.write(text + '\n')
-        fp.close()
-    else:
-        if(chat_id in add_query_update):
-            del(add_query_update[chat_id])
-        add_query_update[chat_id] = update
-        update.message.reply_text("我猜你想查",
-            reply_markup = InlineKeyboardMarkup([[
-                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, '1')) for s in candi_list
-            ]]))
+        if(len(candi_list)==0):
+            update.message.reply_text(
+                '此店家不存在'
+            )
+            fp = codecs.open("non-exist-shop.txt", "a", "utf-8")
+            fp.write(text + '\n')
+            fp.close()
+        else:
+            if(chat_id in add_query_update):
+                del(add_query_update[chat_id])
+            add_query_update[chat_id] = update
+            update.message.reply_text("我猜你想查",
+                reply_markup = InlineKeyboardMarkup([[
+                        InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, '1')) for s in candi_list
+                ]]))
 
 def filtermsg(update, bot):
     chat_id = str(update.message.chat_id)
@@ -288,3 +289,58 @@ def whengetfile(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
+
+def addtag(update, bot):
+    chat_id = update.message.chat_id
+    try:
+        command, shopname, tag = update.message.text.split()
+    except ValueError:
+        update.message.reply_text(
+            '輸入格式為 /addtag 店家 標籤'
+        )
+        return
+    shopname = preprocess(shopname)
+    tag = preprocess(tag)
+
+    list = getshops()
+    if not shopname in list:
+        update.message.reply_text(
+            '無此店家'
+        )
+        update.message.reply_text(
+            '可先用 /search 查詢正確名稱'
+        )
+        return
+    else:
+        tags = get_tags(shopname)
+        if tag in tags:
+            update.message.reply_text(
+                '重複的標籤'
+            )
+            return
+        else:
+            tags.append(tag)
+            update.message.reply_text(
+                '正在新增標籤...'
+            )
+            update_tag(shopname, tags)
+            update.message.reply_text(
+                '在{}上新增標籤{}，新增完成。'.format(shopname, tag)
+            )
+
+def listall(update, bot):
+    list = getshops()
+    ret = ''
+    count = 0
+    for i in list:
+        ret += i
+        count +=1
+        if(count==4):
+            count = 0
+            ret += '\n'
+        else:
+            for j in range(7-len(i)):
+                ret += '\t\t\t\t'
+    update.message.reply_text(
+        ret
+    )

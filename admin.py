@@ -115,7 +115,7 @@ def addtypo(update, bot):
     if(not checkpermission(update)):   return
 
     chat_id = str(update.message.chat_id)
-    correct, wrong = update.message.text[len('\\addtypo '):].split()
+    correct, wrong = update.message.text[len('/addtypo '):].split()
     
     fp = codecs.open("typo.json", "r", "utf-8")
     r = json.load(fp)
@@ -124,7 +124,7 @@ def addtypo(update, bot):
     if correct in r:
         r[correct].append(wrong)
     else:
-        r[correct] = wrong
+        r[correct] = [wrong]
     r = str(r)
     r = r.replace("\'", "\"")
 
@@ -132,7 +132,10 @@ def addtypo(update, bot):
     fp.write(str(r))
     fp.close()
     
-    
+    update.message.reply_text(
+        "已新增"
+    )
+
     # for key in r:
     #     for typo in r[key]:
     #         while(typo in text):

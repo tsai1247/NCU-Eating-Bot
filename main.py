@@ -21,7 +21,10 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('random', randomfunc))
     updater.dispatcher.add_handler(CommandHandler('add', add))
     updater.dispatcher.add_handler(CommandHandler('search', search))
-    updater.dispatcher.add_handler(CommandHandler('test', test))
+    # updater.dispatcher.add_handler(CommandHandler('tag', tag))
+    updater.dispatcher.add_handler(CommandHandler('addtag', addtag))
+    updater.dispatcher.add_handler(CommandHandler('list', listall))
+    updater.dispatcher.add_handler(CommandHandler('listall', listall))
     
     # admin commands
     updater.dispatcher.add_handler(CommandHandler('xhelp', xhelp))
@@ -31,6 +34,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('undo', undo))
     updater.dispatcher.add_handler(CommandHandler('restore', restore))
     updater.dispatcher.add_handler(CommandHandler('addtypo', addtypo))
+    updater.dispatcher.add_handler(CommandHandler('test', test))
 
     # normal messages
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
