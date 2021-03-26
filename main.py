@@ -23,7 +23,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('search', search))
     updater.dispatcher.add_handler(CommandHandler('test', test))
     
-    # debugging tools
+    # admin commands
     updater.dispatcher.add_handler(CommandHandler('xhelp', xhelp))
     updater.dispatcher.add_handler(CommandHandler('xhelpzh', xhelpzh))
     updater.dispatcher.add_handler(CommandHandler('clear', clearallrequest))

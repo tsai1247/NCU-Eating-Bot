@@ -3,6 +3,45 @@
 import requests, codecs
 from variable import *
 from overwrite import *
+'''
+public static int Levenshtein(String str1, String str2)
+{
+    Log.e("In Levenshtein.", "");
+    int str1_len = str1.length();
+    int str2_len = str2.length();
+    if(str1_len==0) return str2.length();
+    if(str2_len==0) return str1.length();
+    if(str1.equals(str2)) return 0; // 如果字串相等, 無須遞迴下去!
+    int cost = 0;
+    if(str1.charAt(0) != str2.charAt(0)) cost=1;
+    return  Math.min
+            (
+                Math.min
+                (
+                    Levenshtein(str1.substring(1, str1_len), str2)+1,
+                    Levenshtein(str1, str2.substring(1, str2_len))+1
+                ),
+                
+                Levenshtein(str1.substring(1, str1.length()), str2.substring(1, str2_len))
+            )+cost;
+}
+'''
+def Levenshtein(str1, str2):
+    str1_len = len(str1)
+    str2_len = len(str2)
+    if str1_len==0: 
+        return str2_len
+    if str2_len==0: 
+        return str1_len
+    if str1==str2:
+        return 0
+    cost = 0
+    if str1[0] != str2[0]: 
+        cost=1
+    a = Levenshtein(str1[1:str1_len], str2) + 1
+    b = Levenshtein(str1, str2[1:str2_len]) + 1
+    c = Levenshtein(str1[1:str1_len], str2[1:str2_len]) + cost
+    return min(a, b, c)
 
 def updateHackmd(chat_id, classification, shopname, photolink):
     def updateIndex(code, index):
@@ -52,7 +91,6 @@ def updateHackmd(chat_id, classification, shopname, photolink):
     
     fp = codecs.open("filename.txt", "r", "utf-8")
     oldcode = fp.readlines()
-    print(oldcode)
     fp.close()
 
     fp2 = codecs.open("filename_auto_back_up.txt", "w", "utf-8")

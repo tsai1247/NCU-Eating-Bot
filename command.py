@@ -95,7 +95,7 @@ def add(update, bot):
     except KeyError:
         update.message.reply_text("請選擇分類",
             reply_markup = InlineKeyboardMarkup([[
-                    InlineKeyboardButton(s, callback_data = '{} {}'.format(s, chat_id)) for s in ['宵夜街', '後門', '奢侈街', '山下']
+                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in ['宵夜街', '後門', '奢侈街', '山下']
                 ]]))
 
    
@@ -103,21 +103,87 @@ def add(update, bot):
     print('status:', status)
 
 def getClassification(update, bot):
-    s, chat_id = update.callback_query.data.split(" ")
-    update.callback_query.edit_message_text(
-        '分類為：{}\n請輸入店家名稱'.format(s)
-    )
-    status[chat_id] = "add_step1"
-    add_query_classification[chat_id] = s
-    print('status:', status)
+    s, chat_id, type = update.callback_query.data.split(" ")
+
+    if int(type)==0 :
+        update.callback_query.edit_message_text(
+            '分類為：{}\n請輸入店家名稱'.format(s)
+        )
+        status[chat_id] = "add_step1"
+        add_query_classification[chat_id] = s
+        print('status:', status)
+    elif int(type)==1 :
+        if(chat_id in add_query_update):
+            update2 = add_query_update[chat_id]
+            del(add_query_update[chat_id])
+        
+            curMenu = getMenu(s)
+            #### TODO:
+            update.callback_query.edit_message_text(
+                s
+            )
+            for i in curMenu:
+                update2.message.reply_photo(
+                    i
+                )
+        else:
+            update.callback_query.edit_message_text(
+                'something wrong.'
+            )
 
 def search(update, bot):
     chat_id = str(update.message.chat_id)
-    status[chat_id] = "search"
-    update.message.reply_text(
-        '請輸入店家名稱'
-    )
+    ori_text = update.message.text
+    if(len(ori_text)<=len('\\search ')):
+        status[chat_id] = "search"
+        update.message.reply_text(
+            '請輸入店家名稱'
+        )
+    else:
+        text = ori_text[len('\\search'):]
+        findmenu(text, update)
+
     print('status:', status)
+
+def allin(small, big):
+    for i in small:
+        if(not i in big):
+            return False
+    return True
+
+def findmenu(text, update):
+    chat_id = str(update.message.chat_id)
+    list = getshops()
+    if text in list:
+        curMenu = getMenu(text)
+        for i in curMenu:
+            update.message.reply_photo(
+                i
+            )
+    else:
+        candi_list = []
+        print('keyword: {}'.format(text))
+        for shop in list:
+            if(allin(shop, text) or allin(text, shop)):
+                candi_list.append(shop)
+            elif(Levenshtein(shop, text)<2):
+                candi_list.append(shop)
+
+    # if('名豐' in text):
+    #     candi_list = list
+
+    if(len(candi_list)==0):
+        update.message.reply_text(
+            '此店家不存在'
+        )
+    else:
+        if(chat_id in add_query_update):
+            del(add_query_update[chat_id])
+        add_query_update[chat_id] = update
+        update.message.reply_text("我猜你想查",
+            reply_markup = InlineKeyboardMarkup([[
+                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, '1')) for s in candi_list
+            ]]))
 
 def filtermsg(update, bot):
     chat_id = str(update.message.chat_id)
@@ -126,18 +192,8 @@ def filtermsg(update, bot):
         state = status[chat_id]
         if state == 'search':
             del(status[chat_id])
-            list = getshops()
-            try:
-                list.index(text)
-                curMenu = getMenu(text)
-                for i in curMenu:
-                    update.message.reply_photo(
-                        i
-                    )
-            except ValueError:
-                update.message.reply_text(
-                    '此店家不存在'
-                )
+            findmenu(text, update)
+
         elif state == 'add_step1':
             del(status[chat_id])
             status[chat_id] = "add_step2"
