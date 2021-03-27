@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
+from os import stat
 import random
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -54,29 +55,18 @@ def help_zh(update, bot):
 
 def randomfunc(update, bot):
     if isDos(update): return
-    def random_menu(code):
-        rd = code.split('###')
-        ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
-        return ret
-    def sort(rand_shop):
-        cur = rand_shop.split('![]')
-        for i in range(1, len(cur)):
-            cur[i] = cur[i].split('(')[1].split(' =400x')[0]
-        return cur
-    def push_menu(sorted_shop):
-        update.message.reply_text(
-            sorted_shop[0]
-        )
-        for i in range(1, len(sorted_shop)):
-            update.message.reply_photo(
-                sorted_shop[i]
-            )
 
-    push_menu(
-        sort(
-            random_menu(
-                getcode()
-    )))
+    chat_id = getID(update)
+    if(chat_id in status):
+        del(status[chat_id])
+    status[chat_id] = 'random'
+    if(chat_id in add_query_update):
+        del(add_query_update[chat_id])
+    add_query_update[chat_id] = update
+    update.message.reply_text("有什麼要求嗎？",
+            reply_markup = InlineKeyboardMarkup([[
+                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in ['宵夜街', '後門', '奢侈街', '山下', '無']
+                ]]))
     
 def add(update, bot):
     if isDos(update): return
@@ -118,6 +108,8 @@ def getClassification(update, bot):
         update.callback_query.edit_message_text(
             '分類為：{}\n請輸入店家名稱'.format(s)
         )
+        if chat_id in status:
+            del(status[chat_id])
         status[chat_id] = "add_step1"
         add_query_classification[chat_id] = s
         print('status:', status)
@@ -139,12 +131,45 @@ def getClassification(update, bot):
             update.callback_query.edit_message_text(
                 'something wrong.'
             )
+    elif int(type)==2 :
+        def random_menu(code, s):
+            if s=='無':
+                pass
+            else:
+                code2 = split(getcode())
+                location = classMap[s]
+                code = code2[location]
+
+            rd = code.split('###')
+            ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
+            return ret
+        def sort(rand_shop):
+            cur = rand_shop.split('![]')
+            for i in range(1, len(cur)):
+                cur[i] = cur[i].split('(')[1].split(' =400x')[0]
+            return cur
+        def push_menu(sorted_shop):
+            update2.message.reply_text(
+                sorted_shop[0]
+            )
+            for i in range(1, len(sorted_shop)):
+                update2.message.reply_photo(
+                    sorted_shop[i]
+                )
+        update2 = add_query_update[chat_id]
+        push_menu(
+            sort(
+                random_menu(
+                    getcode(), s
+        )))
 
 def search(update, bot):
     if isDos(update): return
     chat_id = getID(update)
     ori_text = update.message.text
     if(len(ori_text)<=len('/search ')):
+        if(chat_id in status):
+            del(status[chat_id])
         status[chat_id] = "search"
         update.message.reply_text(
             '請輸入店家名稱'
@@ -383,6 +408,7 @@ def getID(update):
     return str(update.message.from_user.id)
 
 def report(update, bot):
+    if isDos(update): return
     name = update.message.from_user.full_name
     try:
         text = update.message.text.split('/report ')[1]

@@ -11,7 +11,7 @@ add_query_classification = {}
 add_query_shopname = {}
 add_query_update = {}
 add_query_photolink = {}
-classMap = {'宵夜街':2, '後門':3, '奢侈接':4, '山下':5}
+classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5}
 
 dos_maximum = 25
 penalty = 300
