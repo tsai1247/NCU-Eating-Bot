@@ -131,8 +131,8 @@ def addtypo(update, bot):
 
 
 def test(update, bot):
-    # if isDos(update): return
-    # if(not checkpermission(update)):   return
+    if isDos(update): return
+    if(not checkpermission(update)):   return
 
     chat_id = getID(update)
     from_id = str(update.message.from_user.id)
@@ -141,6 +141,25 @@ def test(update, bot):
         chat_id + "\n" + from_id    
     )
     dos_defence[chat_id] = [1, update.message.date]
+
+def getreport(update, bot):
+    if isDos(update): return
+    if(not checkpermission(update)):   return
+
+    chat_id = getID(update)
+    
+    fp = codecs.open("user_report.txt", "r", "utf-8")
+    oldcode = fp.readlines()
+    fp.close()
+
+    report_files = ''
+    for i in oldcode:
+        report_files += i
+    
+
+    update.message.reply_text(
+        report_files
+    )
 
     
 def getID(update):

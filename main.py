@@ -36,6 +36,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('restore', restore))
     updater.dispatcher.add_handler(CommandHandler('addtypo', addtypo))
     updater.dispatcher.add_handler(CommandHandler('test', test))
+    updater.dispatcher.add_handler(CommandHandler('getreport', getreport))
 
     # normal messages
     updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
