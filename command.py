@@ -154,9 +154,7 @@ def search(update, bot):
 
 def allin(small, big):
     for i in small:
-        print(i)
         if(not i in big):
-            print('n')
             return False
     return True
 
