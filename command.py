@@ -78,7 +78,7 @@ def randomfunc(update, bot):
     
 def add(update, bot):
     if isDos(update): return
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     # status[chat_id] = "add_step1"
 
     # update.message.reply_text(
@@ -96,7 +96,7 @@ def add(update, bot):
             
             updateHackmd(chat_id, cur_classification, cur_shopname, cur_photolink)
             update.message.reply_text(
-                '新增店家 {} 於分類 {}, 新增完成。'.format(cur_classification, cur_shopname)
+                '新增店家 {} 於分類 {}, 新增完成。'.format(cur_shopname, cur_classification)
             )
 
     except KeyError:
@@ -140,7 +140,7 @@ def getClassification(update, bot):
 
 def search(update, bot):
     if isDos(update): return
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     ori_text = update.message.text
     if(len(ori_text)<=len('/search ')):
         status[chat_id] = "search"
@@ -178,7 +178,7 @@ def preprocess(text):
 
 def findmenu(text, update):
     text = preprocess(text)
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     list = getshops()
     if text in list:
         curMenu = getMenu(text)
@@ -219,7 +219,7 @@ def findmenu(text, update):
                 ]]))
 
 def filtermsg(update, bot):
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     text = update.message.text
     try:
         state = status[chat_id]
@@ -249,7 +249,7 @@ def filtermsg(update, bot):
         print('ignore it')
 
 def whengetphoto(update, bot):  
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     try:
         state = status[chat_id]
         if state == 'add_step2':
@@ -274,7 +274,7 @@ def whengetphoto(update, bot):
         print('ignore it')
 
 def whengetfile(update, bot):
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     try:
         state = status[chat_id]
         if state == 'add_step2':
@@ -337,6 +337,28 @@ def addtag(update, bot):
                 '在{}上新增標籤{}，新增完成。'.format(shopname, tag)
             )
 
+def clearallrequest(update, bot):
+    if isDos(update): return
+
+    chat_id = getID(update)
+
+    if(chat_id in status):
+        del(status[chat_id])
+
+    if(chat_id in add_query_shopname):
+        del(add_query_shopname[chat_id])
+
+    if(chat_id in add_query_classification):
+        del(add_query_classification[chat_id])
+
+    if(chat_id in add_query_photolink):
+        del(add_query_photolink[chat_id])
+    
+    update.message.reply_text(
+        "已清除您的所有要求"
+    )
+    print('status', status)
+
 def listall(update, bot):
     if isDos(update): return
     list = getshops()
@@ -354,3 +376,6 @@ def listall(update, bot):
     update.message.reply_text(
         ret
     )
+
+def getID(update):
+    return str(update.message.from_user.id)

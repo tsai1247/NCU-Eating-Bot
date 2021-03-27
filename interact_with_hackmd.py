@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from warnings import catch_warnings
 import requests, codecs
 from variable import *
 from overwrite import *

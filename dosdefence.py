@@ -1,7 +1,7 @@
 from variable import dos_defence, penalty, dos_maximum
 
 def isDos(update):
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     date = update.message.date
 
     if not chat_id in dos_defence:
@@ -29,3 +29,6 @@ def isDos(update):
         else:
             dos_defence[chat_id] = [-1, date]
             return True
+
+def getID(update):
+    return str(update.message.from_user.id)

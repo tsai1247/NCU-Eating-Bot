@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 import os
-from time import time
 from dotenv import load_dotenv
 
 load_dotenv() # Loading environment variable from .env file

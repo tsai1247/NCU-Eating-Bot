@@ -1,14 +1,13 @@
 import codecs
 import json
-import time
-from requests import check_compatibility
+
 from interact_with_hackmd import getcode
 from overwrite import *
 from variable import *
 from dosdefence import *
 
 def checkpermission(update):
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     developer_id = os.getenv("DEVELOPER_ID").split(',')
     if chat_id in developer_id:
         return True
@@ -95,34 +94,13 @@ def xhelpzh(update, bot):
     )
 
 
-def clearallrequest(update, bot):
-    if isDos(update): return
-    if(not checkpermission(update)):   return
 
-    chat_id = str(update.message.chat_id)
-
-    if(chat_id in status):
-        del(status[chat_id])
-
-    if(chat_id in add_query_shopname):
-        del(add_query_shopname[chat_id])
-
-    if(chat_id in add_query_classification):
-        del(add_query_classification[chat_id])
-
-    if(chat_id in add_query_photolink):
-        del(add_query_photolink[chat_id])
-    
-    update.message.reply_text(
-        "已清除您的所有要求"
-    )
-    print('status', status)
 
 def addtypo(update, bot):
     if isDos(update): return
     if(not checkpermission(update)):   return
 
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
     correct, wrong = update.message.text[len('/addtypo '):].split()
     
     fp = codecs.open("typo.json", "r", "utf-8")
@@ -153,11 +131,17 @@ def addtypo(update, bot):
 
 
 def test(update, bot):
-    if isDos(update): return
-    if(not checkpermission(update)):   return
+    # if isDos(update): return
+    # if(not checkpermission(update)):   return
 
-    chat_id = str(update.message.chat_id)
+    chat_id = getID(update)
+    from_id = str(update.message.from_user.id)
+    
     update.message.reply_text(
-        str(update.message.date)
+        chat_id + "\n" + from_id    
     )
     dos_defence[chat_id] = [1, update.message.date]
+
+    
+def getID(update):
+    return str(update.message.from_user.id)
