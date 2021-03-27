@@ -25,6 +25,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('addtag', addtag))
     updater.dispatcher.add_handler(CommandHandler('list', listall))
     updater.dispatcher.add_handler(CommandHandler('listall', listall))
+    updater.dispatcher.add_handler(CommandHandler('report', report))
 
     # admin commands
     updater.dispatcher.add_handler(CommandHandler('xhelp', xhelp))

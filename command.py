@@ -379,3 +379,24 @@ def listall(update, bot):
 
 def getID(update):
     return str(update.message.from_user.id)
+
+def report(update, bot):
+    name = update.message.from_user.full_name
+    try:
+        text = update.message.text.split('/report ')[1]
+    except IndexError:
+        update.message.reply_text(
+            '請使用以下格式回報問題：\n' +
+            '/report 回報內容\n'
+        )
+        return
+
+    chat_type = update.message.chat.type
+
+    fp2 = codecs.open("user_report.txt", "a", "utf-8")
+    fp2.write('{} as {}: {}\n'.format(name, chat_type, text))
+    fp2.close()
+    update.message.reply_text(
+        '已將您的問題回報給開發者，感謝您的使用'
+    )
+    
