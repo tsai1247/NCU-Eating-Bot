@@ -1,3 +1,4 @@
 .env
 filename*.txt
+non-exist-shop.txt
 .png
