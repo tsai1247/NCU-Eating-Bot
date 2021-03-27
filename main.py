@@ -44,6 +44,7 @@ def main():
     # calbackhandler
     updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
 
+    print("Server Running...")
     
     updater.start_polling()
     updater.idle()
