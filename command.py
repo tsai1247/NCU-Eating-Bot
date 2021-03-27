@@ -156,7 +156,11 @@ def getClassification(update, bot):
                 update2.message.reply_photo(
                     sorted_shop[i]
                 )
+        
         update2 = add_query_update[chat_id]
+        update.callback_query.edit_message_text(
+                s
+        )
         push_menu(
             sort(
                 random_menu(
