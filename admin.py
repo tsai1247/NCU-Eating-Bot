@@ -161,6 +161,19 @@ def getreport(update, bot):
         report_files
     )
 
+    fp = codecs.open("non-exist-shop.txt", "r", "utf-8")
+    oldcode = fp.readlines()
+    fp.close()
+
+    report_files = ''
+    for i in oldcode:
+        report_files += i
+    
+
+    update.message.reply_text(
+        report_files
+    )
+
     
 def getID(update):
     return str(update.message.from_user.id)
