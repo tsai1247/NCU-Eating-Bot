@@ -230,7 +230,7 @@ def filtermsg(update, bot):
         elif state == 'add_step1':
             del(status[chat_id])
             status[chat_id] = "add_step2"
-            add_query_shopname[chat_id] = text
+            add_query_shopname[chat_id] = preprocess(text)
             update.message.reply_text(
                 '新增店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id])
             )
@@ -238,9 +238,9 @@ def filtermsg(update, bot):
             del(status[chat_id])
             status[chat_id] = "add_step2"
             del(add_query_shopname[chat_id])
-            add_query_shopname[chat_id] = text
+            add_query_shopname[chat_id] = preprocess(text)
             update.message.reply_text(
-                '新增店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id])
+                '更改店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id])
             )
 
             
