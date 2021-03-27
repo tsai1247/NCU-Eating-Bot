@@ -158,7 +158,7 @@ def getreport(update, bot):
     
 
     update.message.reply_text(
-        report_files
+        'User Report:\n' + report_files
     )
 
     fp = codecs.open("non-exist-shop.txt", "r", "utf-8")
@@ -171,7 +171,7 @@ def getreport(update, bot):
     
 
     update.message.reply_text(
-        report_files
+        'Unfind Shops:\n' + report_files
     )
 
     
