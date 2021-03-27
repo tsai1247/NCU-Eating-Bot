@@ -159,7 +159,7 @@ def getClassification(update, bot):
         
         update2 = add_query_update[chat_id]
         update.callback_query.edit_message_text(
-                s
+                '條件： ' + s
         )
         push_menu(
             sort(
@@ -246,7 +246,7 @@ def findmenu(text, update):
             add_query_update[chat_id] = update
             update.message.reply_text("我猜你想查",
                 reply_markup = InlineKeyboardMarkup([[
-                        InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, '1')) for s in candi_list
+                        InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list
                 ]]))
 
 def filtermsg(update, bot):
