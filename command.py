@@ -35,6 +35,7 @@ def help(update, bot):
         '/add : add new menu.\n'
         '/list : list all menu.\n'
         '/addtag : add tag for a shop.\n'
+        '/report: report the bot\'s problems\n'
     )
 
 def help_zh(update, bot):
@@ -46,8 +47,9 @@ def help_zh(update, bot):
         '/random : 隨機取得一個菜單。\n'
         '/search : 查詢菜單。\n'
         '/add : 新增菜單。\n'
-        '/list : 列出所有店家.\n'
-        '/addtag : 在店家上新增標籤.\n'
+        '/list : 列出所有店家。\n'
+        '/addtag : 在店家上新增標籤。\n'
+        '/report: 回報Bot的問題。\n'
     )
 
 def randomfunc(update, bot):
