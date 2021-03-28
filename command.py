@@ -21,7 +21,7 @@ def start(update, bot):
     help(update, bot)
     # bot.send_photo(
     #     chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def help(update, bot):
     if isDos(update): return
@@ -36,7 +36,7 @@ def help(update, bot):
         '/addtag : add tag for a shop.\n'
         '/report: report the bot\'s problems\n'
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def help_zh(update, bot):
     if isDos(update): return
     update.message.reply_text(
@@ -50,7 +50,7 @@ def help_zh(update, bot):
         '/addtag : 在店家上新增標籤。\n'
         '/report: 回報Bot的問題。\n'
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def randomfunc(update, bot):
     if isDos(update): return
 
@@ -65,7 +65,7 @@ def randomfunc(update, bot):
             reply_markup = InlineKeyboardMarkup([[
                     InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in ['宵夜街', '後門', '奢侈街', '山下', '無']
                 ]]))
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def add(update, bot):
     if isDos(update): return
     chat_id = getID(update)
@@ -98,7 +98,7 @@ def add(update, bot):
                     InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in ['宵夜街', '後門', '奢侈街', '山下']
                 ]]))
     print('status:', status)
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def getClassification(update, bot):
     s, chat_id, type = update.callback_query.data.split(" ")
@@ -160,7 +160,7 @@ def getClassification(update, bot):
                 random_menu(
                     getcode(), s
         )))
-    appendlog(getID(update2), s)
+    appendlog(getID(update2), update2.message.from_user.full_name, s)
 def search(update, bot):
     if isDos(update): return
     chat_id = getID(update)
@@ -176,7 +176,7 @@ def search(update, bot):
         text = ori_text[len('/search'):]
         findmenu(text, update)
     print('status:', status)
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def allin(small, big):
     for i in small:
         if(not i in big):
@@ -272,7 +272,7 @@ def filtermsg(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def whengetphoto(update, bot):  
     chat_id = getID(update)
     try:
@@ -297,7 +297,7 @@ def whengetphoto(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def whengetfile(update, bot):
     chat_id = getID(update)
     try:
@@ -322,7 +322,7 @@ def whengetfile(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def addtag(update, bot):
     if isDos(update): return
     chat_id = update.message.chat_id
@@ -361,7 +361,7 @@ def addtag(update, bot):
             update.message.reply_text(
                 '在{}上新增標籤{}，新增完成。'.format(shopname, tag)
             )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def clearallrequest(update, bot):
     if isDos(update): return
 
@@ -383,7 +383,7 @@ def clearallrequest(update, bot):
         "已清除您的所有要求"
     )
     print('status', status)
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def listall(update, bot):
     if isDos(update): return
     list = getshops()
@@ -404,7 +404,7 @@ def listall(update, bot):
     update.message.reply_text(
         ret
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def getID(update):
     return str(update.message.from_user.id)
 
@@ -427,7 +427,7 @@ def report(update, bot):
     update.message.reply_text(
         '已將您的問題回報給開發者，感謝您的使用'
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def appendlog(user_id, text):
     fp2 = codecs.open("logger.txt", "a", "utf-8")
     fp2.write('{}: {}\n'.format(user_id, text))

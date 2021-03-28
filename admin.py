@@ -34,7 +34,7 @@ def backup(update, bot):
     update.message.reply_text(
         "手動備份完成"
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def undo(update, bot):
     if isDos(update): return
     if(not checkpermission(update)):   return
@@ -48,7 +48,7 @@ def undo(update, bot):
     update.message.reply_text(
         "以自動備份檔還原完成"
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def restore(update, bot):
     if isDos(update): return
     if(not checkpermission(update)):   return
@@ -62,7 +62,7 @@ def restore(update, bot):
     update.message.reply_text(
         "以手動備份檔還原完成"
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def xhelp(update, bot):
     if isDos(update): return
     if(not checkpermission(update)):   return
@@ -77,7 +77,7 @@ def xhelp(update, bot):
         '/restore : overwrite hackmd data with manual_backup data.\n'
         '/addtypo correct_text wrong_text : stronger search function.\n'
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 def xhelpzh(update, bot):
     if isDos(update): return
     if(not checkpermission(update)):   return
@@ -92,7 +92,7 @@ def xhelpzh(update, bot):
         '/restore : 從上次的手動備份還原菜單。\n'
         '/addtypo 正確詞 錯誤詞 : 新增常見錯字資料。\n'
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 
 
@@ -128,7 +128,7 @@ def addtypo(update, bot):
     #             index = text.index(typo)
     #             lens = len(typo)
     #             text = text[0:index] + key + text[(index+lens):]
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def test(update, bot):
     if isDos(update): return
@@ -141,7 +141,7 @@ def test(update, bot):
         chat_id + "\n" + from_id    
     )
     dos_defence[chat_id] = [1, update.message.date]
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def getreport(update, bot):
     if isDos(update): return
@@ -174,7 +174,7 @@ def getreport(update, bot):
     update.message.reply_text(
         'Unfind Shops:\n' + report_files
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
     
     fp = codecs.open("logger.txt", "r", "utf-8")
     oldcode = fp.readlines()
@@ -188,13 +188,13 @@ def getreport(update, bot):
     update.message.reply_text(
         'logger:\n' + report_files
     )
-    appendlog(getID(update), update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
     
 
 def getID(update):
     return str(update.message.from_user.id)
 
-def appendlog(user_id, text):
+def appendlog(user_id, username, text):
     fp2 = codecs.open("logger.txt", "a", "utf-8")
-    fp2.write('{}: {}\n'.format(user_id, text))
+    fp2.write('{}({}): {}\n'.format(user_id, username, text))
     fp2.close()
