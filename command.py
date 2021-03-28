@@ -149,6 +149,9 @@ def getClassification(update, bot):
                 update2.message.reply_photo(
                     sorted_shop[i]
                 )
+        if chat_id in status:
+            del(status[chat_id])
+            
         update.callback_query.edit_message_text(
                 '條件： ' + s
         )
