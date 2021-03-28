@@ -174,7 +174,6 @@ def getreport(update, bot):
     update.message.reply_text(
         'Unfind Shops:\n' + report_files
     )
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
     
     fp = codecs.open("logger.txt", "r", "utf-8")
     oldcode = fp.readlines()
