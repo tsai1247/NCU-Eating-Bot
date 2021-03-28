@@ -12,11 +12,9 @@ from dosdefence import *
 
 def start(update, bot):
     if isDos(update): return
-    curName =  update.message.from_user.username
+    curName =  str(update.message.from_user.full_name)
     update.message.reply_text(
-        'Hello, ' +
-        curName +
-        '.'
+        'Hello, ' + curName + '.'
     )
     update.message.reply_text(
         'I am just a Eating Bot.'
@@ -418,8 +416,7 @@ def report(update, bot):
         text = update.message.text.split('/report ')[1]
     except IndexError:
         update.message.reply_text(
-            '請使用以下格式回報問題：\n' +
-            '/report 回報內容\n'
+            '請使用以下格式回報問題：\n' + '/report 回報內容\n'
         )
         return
 
