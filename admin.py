@@ -176,6 +176,21 @@ def getreport(update, bot):
     )
     appendlog(getID(update), update.message.text)
     
+    fp = codecs.open("logger.txt", "r", "utf-8")
+    oldcode = fp.readlines()
+    fp.close()
+
+    report_files = ''
+    for i in oldcode:
+        report_files += i
+    
+
+    update.message.reply_text(
+        'logger:\n' + report_files
+    )
+    appendlog(getID(update), update.message.text)
+    
+
 def getID(update):
     return str(update.message.from_user.id)
 
