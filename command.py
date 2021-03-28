@@ -12,9 +12,8 @@ from dosdefence import *
 
 def start(update, bot):
     if isDos(update): return
-    curName =  str(update.message.from_user.full_name)
     update.message.reply_text(
-        'Hello, ' + curName + '.'
+        'Hello.'
     )
     update.message.reply_text(
         'I am just a Eating Bot.'
