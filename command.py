@@ -428,7 +428,8 @@ def report(update, bot):
         '已將您的問題回報給開發者，感謝您的使用'
     )
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
-def appendlog(user_id, text):
+
+def appendlog(user_id, username, text):
     fp2 = codecs.open("logger.txt", "a", "utf-8")
-    fp2.write('{}: {}\n'.format(user_id, text))
+    fp2.write('{}({}): {}\n'.format(user_id, username, text))
     fp2.close()
