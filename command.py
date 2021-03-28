@@ -91,6 +91,9 @@ def add(update, bot):
             )
 
     except KeyError:
+        if(chat_id in add_query_update):
+           del(add_query_update[chat_id])
+        add_query_update[chat_id] = update
         update.message.reply_text("請選擇分類",
             reply_markup = InlineKeyboardMarkup([[
                     InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in ['宵夜街', '後門', '奢侈街', '山下']
@@ -100,7 +103,9 @@ def add(update, bot):
 
 def getClassification(update, bot):
     s, chat_id, type = update.callback_query.data.split(" ")
-
+    if(chat_id in add_query_update):
+        update2 = add_query_update[chat_id]
+        del(add_query_update[chat_id])
     if int(type)==0 :
         update.callback_query.edit_message_text(
             '分類為：{}\n請輸入店家名稱'.format(s)
@@ -111,22 +116,14 @@ def getClassification(update, bot):
         add_query_classification[chat_id] = s
         print('status:', status)
     elif int(type)==1 :
-        if(chat_id in add_query_update):
-            update2 = add_query_update[chat_id]
-            del(add_query_update[chat_id])
-        
-            curMenu = getMenu(s)
-            #### TODO:
-            update.callback_query.edit_message_text(
-                s
-            )
-            for i in curMenu:
-                update2.message.reply_photo(
-                    i
-                )
-        else:
-            update.callback_query.edit_message_text(
-                'something wrong.'
+        curMenu = getMenu(s)
+        #### TODO:
+        update.callback_query.edit_message_text(
+            s
+        )
+        for i in curMenu:
+            update2.message.reply_photo(
+                i
             )
     elif int(type)==2 :
         def random_menu(code, s):
@@ -153,9 +150,6 @@ def getClassification(update, bot):
                 update2.message.reply_photo(
                     sorted_shop[i]
                 )
-        
-        del(status[chat_id])
-        update2 = add_query_update[chat_id]
         update.callback_query.edit_message_text(
                 '條件： ' + s
         )
@@ -164,7 +158,7 @@ def getClassification(update, bot):
                 random_menu(
                     getcode(), s
         )))
-    appendlog(getID(update), s)
+    appendlog(getID(update2), s)
 def search(update, bot):
     if isDos(update): return
     chat_id = getID(update)
