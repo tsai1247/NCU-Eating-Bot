@@ -151,7 +151,7 @@ def getClassification(update, bot):
                 )
         if chat_id in status:
             del(status[chat_id])
-            
+
         update.callback_query.edit_message_text(
                 '條件： ' + s
         )
@@ -396,8 +396,11 @@ def listall(update, bot):
             count = 0
             ret += '\n'
         else:
-            for j in range(7-len(i)):
-                ret += '\t\t\t\t'
+            if(len(i)>6):
+                ret+='\n'
+            else:
+                for j in range(7-len(i)):
+                    ret += '\t\t\t\t'
     update.message.reply_text(
         ret
     )
