@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from admin import *
 from interact_with_hackmd import *
 from command import *
+from error import *
 
 # preparation
 load_dotenv() # Loading environment variable from .env file
@@ -45,6 +46,9 @@ def main():
 
     # calbackhandler
     updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
+
+    # error handler
+    updater.dispatcher.add_error_handler(error)
 
     print("Server Running...")
     
