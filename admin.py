@@ -190,36 +190,6 @@ def getreport(update, bot):
     )
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
     
-def cat(update, bot):
-    if isDos(update): return
-    if(not checkpermission(update)):   return
-    text = update.message.text
-    text = preprocess(text.split('/cat')[1])
-    
-    if('@NCU_Eating_Bot' in text):
-        text = text.split('@NCU_Eating_Bot')[1]
-    if(not '.' in text):
-        text+='.txt'
-    
-    print('try to open {}'.format(text))
-
-    try:
-        fp = codecs.open(text, "r", "utf-8")
-        code = fp.readlines()
-        fp.close()
-        ret = ''
-        for i in code:
-            print(i)
-            update.messagae.reply_text(
-                str('>{}'.format(i))
-            )
-    except:
-        update.message.reply_text(
-            'file no found.'
-        )
-
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
-
 def manual_overwrite(update, bot):
     if isDos(update): return
     if(not checkpermission(update)):   return

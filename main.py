@@ -38,7 +38,6 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('addtypo', addtypo))
     updater.dispatcher.add_handler(CommandHandler('test', test))
     updater.dispatcher.add_handler(CommandHandler('getreport', getreport))
-    updater.dispatcher.add_handler(CommandHandler('cat', cat))
     updater.dispatcher.add_handler(CommandHandler('overwrite', manual_overwrite))
 
     # normal messages
