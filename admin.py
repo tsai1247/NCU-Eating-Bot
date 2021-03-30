@@ -209,11 +209,12 @@ def cat(update, bot):
         fp.close()
         ret = ''
         for i in code:
-            update.messagae.reply_text(
-                i
-            )
-    except:
+            ret+=i
         update.messagae.reply_text(
+            str(ret)
+        )
+    except:
+        update.message.reply_text(
             'file no found.'
         )
 
