@@ -84,6 +84,8 @@ def add(update, bot):
             cur_shopname = add_query_shopname[chat_id]
             cur_photolink = add_query_photolink[chat_id]
             
+            print("adding:", cur_classification, cur_shopname, cur_photolink)
+
             updateHackmd(chat_id, cur_classification, cur_shopname, cur_photolink)
             update.message.reply_text(
                 '新增店家 {} 於分類 {}, 新增完成。'.format(cur_shopname, cur_classification)
@@ -304,7 +306,7 @@ def whengetphoto(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, 'getphoto')
 def whengetfile(update, bot):
     chat_id = getID(update)
     try:
@@ -329,7 +331,7 @@ def whengetfile(update, bot):
         print('status:', status)
     except KeyError:
         print('ignore it')
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    appendlog(getID(update), update.message.from_user.full_name, 'getfile')
 def addtag(update, bot):
     if isDos(update): return
     chat_id = update.message.chat_id
