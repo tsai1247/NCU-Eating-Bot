@@ -165,7 +165,14 @@ def search(update, bot):
     if isDos(update): return
     chat_id = getID(update)
     ori_text = update.message.text
-    if(len(ori_text)<=len('/search ')):
+    if '/search@NCU_Eating_Bot' in ori_text and len(ori_text)<=len('/search@NCU_Eating_Bot '):
+        if(chat_id in status):
+            del(status[chat_id])
+        status[chat_id] = "search"
+        update.message.reply_text(
+            '請輸入店家名稱'
+        )
+    elif '/search' in ori_text and len(ori_text)<=len('/search '):
         if(chat_id in status):
             del(status[chat_id])
         status[chat_id] = "search"
