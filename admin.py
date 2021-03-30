@@ -209,8 +209,9 @@ def cat(update, bot):
         fp.close()
         ret = ''
         for i in code:
+            print(i)
             update.messagae.reply_text(
-                str(i)
+                str('>{}'.format(i))
             )
     except:
         update.message.reply_text(
