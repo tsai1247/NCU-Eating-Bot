@@ -199,8 +199,10 @@ def cat(update, bot):
     if('@NCU_Eating_Bot' in text):
         text = text.split('@NCU_Eating_Bot')[1]
     if(not '.' in text):
-        text+='.'
+        text+='.txt'
     
+    print('try to open {}'.format(text))
+
     try:
         fp = codecs.open(text, "r", "utf-8")
         code = fp.readlines()
@@ -241,7 +243,7 @@ def manual_overwrite(update, bot):
         'Done.'
     )   
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
-    
+
 def getID(update):
     return str(update.message.from_user.id)
 
