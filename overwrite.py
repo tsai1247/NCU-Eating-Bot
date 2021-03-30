@@ -2,6 +2,7 @@ import os
 import platform
 
 def overwrite(srcdata):
+    print('overwritting,', platform.system())
     if platform.system() == 'Windows':
         command = "modules\\hackmd-overwriter\\bin\\overwrite.cmd " + os.getenv("MD_SOURCE") + ' ' + srcdata
     else:
