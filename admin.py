@@ -206,7 +206,7 @@ def manual_overwrite(update, bot):
         overwrite('filename.txt')
     else:
         if(not '.' in text):
-            text += '.'
+            text += '.txt'
         update.message.reply_text(
             'try overwrite with {}'.format(text)
         )
