@@ -207,8 +207,11 @@ def cat(update, bot):
         fp = codecs.open(text, "r", "utf-8")
         code = fp.readlines()
         fp.close()
+        ret = ''
+        for i in code:
+            ret+=i
         update.messagae.reply_text(
-            code
+            ret
         )
     except:
         update.messagae.reply_text(
