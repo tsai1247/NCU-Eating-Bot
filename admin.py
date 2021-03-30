@@ -1,4 +1,5 @@
 import codecs
+from command import preprocess
 import json
 
 from interact_with_hackmd import getcode
@@ -189,7 +190,58 @@ def getreport(update, bot):
     )
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
     
+def cat(update, bot):
+    if isDos(update): return
+    if(not checkpermission(update)):   return
+    text = update.message.text
+    text = preprocess(text.split('/cat')[1])
+    
+    if('@NCU_Eating_Bot' in text):
+        text = text.split('@NCU_Eating_Bot')[1]
+    if(not '.' in text):
+        text+='.'
+    
+    try:
+        fp = codecs.open(text, "r", "utf-8")
+        code = fp.readlines()
+        fp.close()
+        update.messagae.reply_text(
+            code
+        )
+    except:
+        update.messagae.reply_text(
+            'file no found.'
+        )
 
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+
+def manual_overwrite(update, bot):
+    if isDos(update): return
+    if(not checkpermission(update)):   return
+
+    text = update.message.text
+    text = preprocess(text.split('/overwrite')[1])
+    if('@NCU_Eating_Bot' in text):
+        text = text.split('@NCU_Eating_Bot')[1]
+    
+    if(text==''):
+        update.message.reply_text(
+            'try overwrite with {}'.format('filename.txt')
+        )
+        overwrite('filename.txt')
+    else:
+        if(not '.' in text):
+            text += '.'
+        update.message.reply_text(
+            'try overwrite with {}'.format(text)
+        )
+        overwrite(text)
+
+    update.message.reply_text(
+        'Done.'
+    )   
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    
 def getID(update):
     return str(update.message.from_user.id)
 
