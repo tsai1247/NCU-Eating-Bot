@@ -87,7 +87,7 @@ def updateHackmd(chat_id, classification, shopname, photolink):
     del(add_query_shopname[chat_id])
     del(add_query_photolink[chat_id])
 
-    code = split(()) # len = 6
+    code = split(getcode()) # len = 6
                             # 菜單 索引 宵夜街 後門 奢侈街 山下
     index = classMap[classification]
     code[1] = updateIndex(code[1], index-2)
