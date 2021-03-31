@@ -124,7 +124,7 @@ def getcode():  # get all hackmd contents
         sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
         code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
         if code != oldcode:
-            print("last update failed.")
+            append("last update failed.")
             overwrite('filename.txt')
 
 
@@ -132,7 +132,7 @@ def getcode():  # get all hackmd contents
         sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
         code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
         if(code != oldcode):
-            print("temp-update failed.")
+            append("temp-update failed.")
             code = oldcode
     except TimeoutError:
         code = oldcode
@@ -257,3 +257,8 @@ def update_tag(shopname, tags):
 
     overwrite('filename.txt')
     return
+
+def appendlog(text):
+    fp2 = codecs.open("logger.txt", "a", "utf-8")
+    fp2.write(text+'\n')
+    fp2.close()
