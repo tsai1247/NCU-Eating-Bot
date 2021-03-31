@@ -87,7 +87,7 @@ def updateHackmd(chat_id, classification, shopname, photolink):
     del(add_query_shopname[chat_id])
     del(add_query_photolink[chat_id])
 
-    code = split(getcode()) # len = 6
+    code = split(()) # len = 6
                             # 菜單 索引 宵夜街 後門 奢侈街 山下
     index = classMap[classification]
     code[1] = updateIndex(code[1], index-2)
@@ -115,12 +115,15 @@ def getcode():  # get all hackmd contents
     fp = codecs.open("filename.txt", "r", "utf-8")
     oldcode = fp.readlines()
     fp.close()
-    
+    tmp = ''
+    for i in oldcode:
+        tmp+=i
+    oldcode = tmp
     try:
         response = requests.get(url)
         sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
         code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
-        if(getcode()!=oldcode):
+        if code != oldcode:
             print("last update failed.")
             overwrite('filename.txt')
 
@@ -128,7 +131,7 @@ def getcode():  # get all hackmd contents
         response = requests.get(url)
         sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
         code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
-        if(getcode()!=oldcode):
+        if(code != oldcode):
             print("temp-update failed.")
             code = oldcode
     except TimeoutError:
