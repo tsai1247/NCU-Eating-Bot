@@ -200,21 +200,34 @@ def manual_overwrite(update, bot):
         text = text.split('@NCU_Eating_Bot')[1]
     
     if(text==''):
-        update.message.reply_text(
-            'try overwrite with {}'.format('filename.txt')
-        )
-        overwrite('filename.txt')
-    else:
-        if(not '.' in text):
-            text += '.txt'
-        update.message.reply_text(
-            'try overwrite with {}'.format(text)
-        )
-        overwrite(text)
-
+        text = 'filename.txt'
+    if(not '.' in text):
+        text += '.txt'
     update.message.reply_text(
-        'Done.'
-    )   
+        'try overwrite with {}'.format(text)
+    )
+    overwrite(text)
+
+    response = requests.get(url)
+    sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
+    code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
+    
+    fp = codecs.open(text, "r", "utf-8")
+    oldcode = fp.readlines()
+    fp.close()
+    tmp = ''
+    for i in oldcode:
+        tmp+=i
+    oldcode = tmp
+
+    if(oldcode == code):
+        update.message.reply_text(
+            '上傳成功'
+        )
+    else:
+        update.message.reply_text(
+            '上傳失敗'
+        )
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def getID(update):
