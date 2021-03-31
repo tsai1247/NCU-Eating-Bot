@@ -131,18 +131,18 @@ def addtypo(update, bot):
     #             text = text[0:index] + key + text[(index+lens):]
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
-def test(update, bot):
+def test(bot, update):
     if isDos(update): return
     if(not checkpermission(update)):   return
-
-    chat_id = getID(update)
-    from_id = str(update.message.from_user.id)
     
-    update.message.reply_text(
-        chat_id + "\n" + from_id    
-    )
-    dos_defence[chat_id] = [1, update.message.date]
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    print('hi')
+    chat_id = getID(update)
+    text = 'hihi~~'
+    
+    bot.send_message(chat_id, text)
+
+
+    # appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def getreport(update, bot):
     if isDos(update): return
