@@ -198,7 +198,7 @@ def DealWithPhotolink(update, file_id):
         state = status.get(chat_id)
         if state == 'add_step2':
             update.message.reply_text('正在取得照片...')
-            photolink = uploadAndGetPhoto(update.message.photo[0].file_id)
+            photolink = uploadAndGetPhoto(file_id)
             if chat_id in add_query_photolink:  # exist
                 add_query_photolink[chat_id].append(photolink)
             else:   # first append
