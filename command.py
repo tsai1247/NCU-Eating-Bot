@@ -423,10 +423,13 @@ def report(update, bot):
     try:
         text = update.message.text.split('/report ')[1]
     except IndexError:
-        update.message.reply_text(
-            '請使用以下格式回報問題：\n' + '/report 回報內容\n'
-        )
-        return
+        try:
+            text = update.message.text.split('/report@NCU_Eating_Bot')[1]
+        except IndexError:
+            update.message.reply_text(
+                '請使用以下格式回報問題：\n' + '/report 回報內容\n'
+            )
+            return
 
     chat_type = update.message.chat.type
 

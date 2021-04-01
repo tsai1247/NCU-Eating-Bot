@@ -1,6 +1,6 @@
 import codecs
 from command import preprocess
-import json
+import json, requests
 
 from interact_with_hackmd import getcode
 from overwrite import *
@@ -199,13 +199,21 @@ def manual_overwrite(update, bot):
     if('@NCU_Eating_Bot' in text):
         text = text.split('@NCU_Eating_Bot')[1]
     
-    if(text==''):
-        text = 'filename.txt'
-    if(not '.' in text):
-        text += '.txt'
-    update.message.reply_text(
-        'try overwrite with {}'.format(text)
-    )
+    try:
+        num = int(text)
+        for i in range(num):
+            update.message.reply_text(
+               'try overwrite with {}'.format(text)
+            )
+            overwrite('filename.txt')
+    except:
+        if(text==''):
+            text = 'filename.txt'
+        if(not '.' in text):
+            text += '.txt'
+        update.message.reply_text(
+            'try overwrite with {}'.format(text)
+        )
     overwrite(text)
 
     response = requests.get(url)
