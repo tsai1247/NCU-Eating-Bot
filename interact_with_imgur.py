@@ -4,9 +4,10 @@ def uploadAndGetPhoto(photorequesturl):
     photoresponse =  json.loads(requests.get(photorequesturl).content.decode())
     file_path = photoresponse['result']['file_path']
     # when error 404?
-    photorequesturl = 'https://api.telegram.org/file/bot' + os.getenv("TELEGRAM_TOKEN") + '/' + file_path
-    print(photorequesturl)
+    photorequesturl = 'https://api.telegram.org/file/bot{}/{}'.format(os.getenv("TELEGRAM_TOKEN"), file_path)
+    print('get photo with get request: {}'.format(photorequesturl))
     photo = requests.get(photorequesturl).content
+    
     fp = open("tmpphoto.png", "wb")
     fp.write(photo)
     fp.close()
