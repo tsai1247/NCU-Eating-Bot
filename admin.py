@@ -203,7 +203,7 @@ def manual_overwrite(update, bot):
         num = int(text)
         for i in range(num):
             update.message.reply_text(
-               'try overwrite with {}'.format(text)
+               'try overwriting, {} time(s).'.format(i+1)
             )
             overwrite('filename.txt')
             response = requests.get(url)
@@ -232,7 +232,7 @@ def manual_overwrite(update, bot):
         if(not '.' in text):
             text += '.txt'
         update.message.reply_text(
-            'try overwrite with {}'.format(text)
+            'try overwriting with {}'.format(text)
         )
     overwrite(text)
 
