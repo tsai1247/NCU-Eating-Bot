@@ -131,7 +131,7 @@ def allin(small, big):
 def preprocess(text):
     ignorespace = ''
     for i in text:
-        if i in ignore_list:
+        if i not in ignore_list:
             ignorespace+=i
     text = ignorespace
     r = read('typo.json')
