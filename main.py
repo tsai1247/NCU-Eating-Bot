@@ -15,7 +15,7 @@ load_dotenv() # Loading environment variable from .env file
 def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
 
-# TODO: declaration of keywords
+    # TODO: declaration of keywords
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_handler(CommandHandler('helpzh', help_zh))
@@ -60,41 +60,10 @@ if __name__ == '__main__':
     main()
 
 
-
-"""
+'''
 reference:
 
-https://core.telegram.org/bots/api#sendmessage method
-    $message = <<<TEXT
-    *** your content ***
-    *** somew
-    here below (or above) a link to your image with invisible character(s) ***
-    <a href="https://www.carspecs.us/photos/c8447c97e355f462368178b3518367824a757327-2000.jpg"> ‏ </a>
-    TEXT;
+https://core.telegram.org/bots/api#sendmessage
+https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets#post-an-image-file-from-disk
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: multipart/form-data']);
-    curl_setopt($ch, CURLOPT_URL, 'https://api.telegram.org/bot<token>/sendMessage');
-    $postFields = array(
-        'chat_id' => '@username',
-        'text' => $message,
-        'parse_mode' => 'HTML',
-        'disable_web_page_preview' => false,
-    );
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-    if(!curl_exec($ch))
-        echo curl_error($ch);
-    curl_close($ch);
-
-
-https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets#post-an-image-file-from-disk :
-
-    bot.send_photo(chat_id=chat_id, photo='https://telegram.org/img/t_logo.png')
-
-MessageHandler(Filters.text, reply_handler)
-
-chat_id = bot.get_updates()[-1].message.chat_id
-
-"""
+'''

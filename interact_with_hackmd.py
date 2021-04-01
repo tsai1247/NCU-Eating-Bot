@@ -3,29 +3,7 @@
 import requests, codecs
 from variable import *
 from overwrite import *
-'''
-public static int Levenshtein(String str1, String str2)
-{
-    Log.e("In Levenshtein.", "");
-    int str1_len = str1.length();
-    int str2_len = str2.length();
-    if(str1_len==0) return str2.length();
-    if(str2_len==0) return str1.length();
-    if(str1.equals(str2)) return 0; // 如果字串相等, 無須遞迴下去!
-    int cost = 0;
-    if(str1.charAt(0) != str2.charAt(0)) cost=1;
-    return  Math.min
-            (
-                Math.min
-                (
-                    Levenshtein(str1.substring(1, str1_len), str2)+1,
-                    Levenshtein(str1, str2.substring(1, str2_len))+1
-                ),
-                
-                Levenshtein(str1.substring(1, str1.length()), str2.substring(1, str2_len))
-            )+cost;
-}
-'''
+
 def Levenshtein(str1, str2):
     str1_len = len(str1)
     str2_len = len(str2)
@@ -35,18 +13,18 @@ def Levenshtein(str1, str2):
         return str1_len
     if str1==str2:
         return 0
-    cost = 0
-    if str1[0] != str2[0]: 
-        cost=1
+    
+    cost = 1 if str1[0] == str2[0] else 0
+
     a = Levenshtein(str1[1:str1_len], str2) + 1
-    if a>5:
-        return 5
+    if a>5: return 5
+
     b = Levenshtein(str1, str2[1:str2_len]) + 1
-    if b>5:
-        return 5
+    if b>5: return 5
+    
     c = Levenshtein(str1[1:str1_len], str2[1:str2_len]) + cost
-    if c>5:
-        return 5
+    if c>5: return 5
+    
     return min(a, b, c)
 
 def updateHackmd(chat_id, classification, shopname, photolink):
@@ -111,6 +89,7 @@ def updateHackmd(chat_id, classification, shopname, photolink):
 
     overwrite('filename.txt')
 
+
 def getcode():  # get all hackmd contents    
     fp = codecs.open("filename.txt", "r", "utf-8")
     oldcode = fp.readlines()
@@ -126,15 +105,6 @@ def getcode():  # get all hackmd contents
         if code != oldcode:
             appendlog("last update failed.")
             code = oldcode
-            # overwrite('filename.txt')
-
-
-        # response = requests.get(url)
-        # sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
-        # code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
-        # if(code != oldcode):
-        #     appendlog("temp-update failed.")
-        #     code = oldcode
     except TimeoutError:
         code = oldcode
 
@@ -168,9 +138,7 @@ def GetReverseMenu(curMenu):
         midpath.append([])
 
     for i in curMenu:
-        # print(i)
         for j in range(len(i)):
-        # print('>', j)
             midpath[j].append(i[j])
     return midpath
 
