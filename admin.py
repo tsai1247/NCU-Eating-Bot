@@ -206,6 +206,26 @@ def manual_overwrite(update, bot):
                'try overwrite with {}'.format(text)
             )
             overwrite('filename.txt')
+            response = requests.get(url)
+            sourcecode_begin = '<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">'
+            code = response.text.split(sourcecode_begin)[1].split('</div>')[0]
+            fp = codecs.open("filename.txt", "r", "utf-8")
+            oldcode = fp.readlines()
+            fp.close()
+            tmp = ''
+            for i in oldcode:
+                tmp+=i
+            oldcode = tmp
+            if code == oldcode:
+                update.message.reply_text(
+                    '上傳成功'
+                )
+                return
+            elif i+1==num:
+                update.message.reply_text(
+                    '上傳失敗'
+                )
+                return
     except:
         if(text==''):
             text = 'filename.txt'
