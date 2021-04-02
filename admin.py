@@ -103,14 +103,27 @@ def getreport(update, bot):
 
     chat_id = getID(update)
     
-    report_files = Concat_Lines(read('user_report.txt'))
-    update.message.reply_text('User Report:\n{}'.format(report_files))
+    report_files = read('user_report.txt')
+    update.message.reply_text('User Report:')
+    for i in range(int(len(report_files)/30)):
+        update.message.reply_text(Concat_Lines(report_files[i*30:(i+1)*30]))
+    if len(report_files)>0:
+        update.message.reply_text(Concat_Lines(report_files[int(len(report_files)/30)*30:]))
 
-    shop_files = Concat_Lines(read('non-exist-shop.txt'))
-    update.message.reply_text('Non-exist-shops:\n{}'.format(shop_files))
-    
-    shop_files = Concat_Lines(read('logger.txt'))
-    update.message.reply_text('logger:\n{}'.format(shop_files))
+    shop_files = read('non-exist-shop.txt')
+    update.message.reply_text('Non exist shops:')
+    for i in range(int(len(shop_files)/30)):
+        update.message.reply_text(Concat_Lines(shop_files[i*30:(i+1)*30]))
+    if len(shop_files)>0:
+        update.message.reply_text(Concat_Lines(shop_files[int(len(shop_files)/30)*30:]))
+
+
+    logger_files = read('logger.txt')
+    update.message.reply_text('Logger:')
+    for i in range(int(len(logger_files) /30)):
+        update.message.reply_text(Concat_Lines(logger_files[i*30:(i+1)*30]))
+    if len(logger_files)>0:
+        update.message.reply_text(Concat_Lines(logger_files[int(len(logger_files)/30)*30:]))
 
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
