@@ -183,10 +183,10 @@ def filtermsg(update, bot):
         elif state == 'add_step1':
             status.update({chat_id:'add_step2'})
             add_query_shopname.update({chat_id:preprocess(text)})
-            update.message.reply_text('新增店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id]))
+            update.message.reply_text('新增店家名稱為{}\n請傳送未壓縮照片( /hint ) 或重新輸入名稱'.format(add_query_shopname[chat_id]))
         elif state == 'add_step2':
             add_query_shopname.update({chat_id:preprocess(text)})
-            update.message.reply_text('更改店家名稱為{}\n請傳送照片或重新輸入名稱'.format(add_query_shopname[chat_id]))
+            update.message.reply_text('更改店家名稱為{}\n請傳送未壓縮照片( /hint ) 或重新輸入名稱'.format(add_query_shopname[chat_id]))
     else:
         print('ignore it')
 
@@ -209,8 +209,13 @@ def DealWithPhotolink(update, file_id):
 
 def whengetphoto(update, bot):
     if isDos(update): return
-    DealWithPhotolink(update, update.message.photo[0].file_id)
+    update.message.reply_text('為確保資料完整性，請上傳未壓縮照片( /hint )。')
+    # DealWithPhotolink(update, update.message.photo[0].file_id)
     appendlog(getID(update), update.message.from_user.full_name, 'getphoto')
+
+def hint(update, bot):
+    for i in hint_zh:
+        update.message.reply_text(i)
 
 def whengetfile(update, bot):
     if isDos(update): return

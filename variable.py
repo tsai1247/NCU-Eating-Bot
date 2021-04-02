@@ -13,6 +13,7 @@ add_query_shopname = {}
 add_query_update = {}
 add_query_photolink = {}
 classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5}
+# classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5, '校內':6}
 ignore_list = [' ', '\n', '\t']
 
 # variable about dos defence
@@ -58,3 +59,8 @@ help_zh =   '以下是常用的指令: \n\
             /list : 列出所有店家。\n\
             /addtag : 在店家上新增標籤。\n\
             /report: 回報Bot的問題。\n'
+
+hint_zh =   [   '在 Telegram Deskop 上，選擇圖片檔後，取消勾選Compress images再傳送',
+                '在 Telegram App 上，使用 file -> Gallery 選擇並傳送圖片檔',
+                '在 Telegram Web 上，使用 Send file 選擇並傳送圖片檔'
+            ]

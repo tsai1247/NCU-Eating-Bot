@@ -49,6 +49,8 @@ def restore(update, bot):
     overwrite('filename_back_up.txt')
     update.message.reply_text("以手動備份檔還原完成")
 
+    write('filename.txt', Concat_Lines(read('filename_back_up.txt')))
+
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def xhelp(update, bot):
