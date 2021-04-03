@@ -139,7 +139,7 @@ def split(code):
     ret.append(code.split('## 索引')[0])
     code = '## 索引' + code.split('## 索引')[1]
 
-    for i in classMap.keys:
+    for i in classMap.keys():
         sep = '## {}'.format(i)
         ret.append(code.split(sep)[0])
         code = sep + code.split(sep)[1]
