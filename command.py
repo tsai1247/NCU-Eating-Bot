@@ -48,7 +48,7 @@ def add(update, bot):
     if isDos(update): return
     
     chat_id = getID(update)
-    if status.get(chat_id) == "add_step2":
+    if status.get(chat_id) == "add_step2" or status.get(chat_id) == "add_step1":
         status.pop(chat_id)
         update.message.reply_text('正在新增店家...')
         cur_classification = add_query_classification.get(chat_id)
