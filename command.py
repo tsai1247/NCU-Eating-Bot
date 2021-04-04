@@ -274,15 +274,17 @@ def listall(update, bot):
     list = getshops()
     reply = ''
     count = 0
+    max_word = 5
+    single_line_cnt = 3
     for shop in list:
         reply += shop
         count += 1
-        if count%3==0:
+        if count%single_line_cnt==0:
             reply+='\n'
-        elif len(shop)>6:
+        elif len(shop)>max_word:
             reply+='\n'
         else:
-            for j in range(7-len(shop)):
+            for j in range(max_word-len(shop)+1):
                 reply += '\t\t\t\t'
     update.message.reply_text(reply)
 
