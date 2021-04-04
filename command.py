@@ -277,7 +277,7 @@ def listall(update, bot):
     for shop in list:
         reply += shop
         count += 1
-        if count%4==0:
+        if count%3==0:
             reply+='\n'
         elif len(shop)>6:
             reply+='\n'
