@@ -18,3 +18,6 @@ def uploadAndGetPhoto(file_id):
     uploaded_image = im.upload_image(PATH, title=title)
     
     return uploaded_image.link
+
+def getNoMenuLink():
+    return "https://i.imgur.com/yPvEnxE.png"
