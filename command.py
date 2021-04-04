@@ -53,7 +53,7 @@ def add(update, bot):
         update.message.reply_text('正在新增店家...')
         cur_classification = add_query_classification.get(chat_id)
         cur_shopname = add_query_shopname.get(chat_id)
-        cur_photolink = add_query_photolink.get(chat_id)
+        cur_photolink = add_query_photolink.get(chat_id, default=[getNoMenuLink()])
         updateHackmd(chat_id, cur_classification, cur_shopname, cur_photolink)
         update.message.reply_text('新增店家 {} 於分類 {}, 新增完成。'.format(cur_shopname, cur_classification))
     else:
@@ -184,9 +184,11 @@ def filtermsg(update, bot):
             status.update({chat_id:'add_step2'})
             add_query_shopname.update({chat_id:preprocess(text)})
             update.message.reply_text('新增店家名稱為{}\n請傳送未壓縮照片( /hint ) 或重新輸入名稱'.format(add_query_shopname[chat_id]))
+            update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。')
         elif state == 'add_step2':
             add_query_shopname.update({chat_id:preprocess(text)})
             update.message.reply_text('更改店家名稱為{}\n請傳送未壓縮照片( /hint ) 或重新輸入名稱'.format(add_query_shopname[chat_id]))
+            update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。')
     else:
         print('ignore it')
 
@@ -210,6 +212,7 @@ def DealWithPhotolink(update, file_id):
 def whengetphoto(update, bot):
     if isDos(update): return
     update.message.reply_text('為確保資料完整性，請上傳未壓縮照片( /hint )。')
+    update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。')
     # DealWithPhotolink(update, update.message.photo[0].file_id)
     appendlog(getID(update), update.message.from_user.full_name, 'getphoto')
 
