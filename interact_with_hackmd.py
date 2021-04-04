@@ -66,7 +66,8 @@ def updateHackmd(chat_id, classification, shopname, photolink):
     
     add_query_classification.pop(chat_id)
     add_query_shopname.pop(chat_id)
-    add_query_photolink.pop(chat_id)
+    if chat_id in add_query_photolink:
+        add_query_photolink.pop(chat_id)
 
     code = split(getcode()) # len = 6
                             # 菜單 索引 宵夜街 後門 奢侈街 山下
