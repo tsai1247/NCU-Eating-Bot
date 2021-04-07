@@ -36,7 +36,8 @@ def randomfunc(update, bot):
     chat_id = getID(update)
     status.update({chat_id:'randomo'})
     add_query_update.update({chat_id:update})
-    list = ['宵夜街', '後門', '奢侈街', '山下', '無']
+    list = classMap.keys()
+    list.append('無')
     update.message.reply_text("有什麼要求嗎？",
         reply_markup = InlineKeyboardMarkup([[
             InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in list
@@ -61,9 +62,10 @@ def add(update, bot):
         update.message.reply_text('新增店家 {} 於分類 {}, 新增完成。'.format(cur_shopname, cur_classification))
     else:
         add_query_update.update({chat_id:update})
+        
         update.message.reply_text("請選擇分類",
             reply_markup = InlineKeyboardMarkup([[
-                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in ['宵夜街', '後門', '奢侈街', '山下']
+                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in classMap.keys()
                 ]]))
 
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
@@ -271,16 +273,14 @@ def clearallrequest(update, bot):
 def listall(update, bot):
     if isDos(update): return
 
-    print(getlist())
     list = getlist().split('|')
     newlist = []
-    for j in range(4):
+    for j in range(len(classMap.keys())):
         newlist.append([])
-        for i in range(11+j, len(list), 5):
+        for i in range(11+j, len(list), len(classMap.keys())+1):
             if preprocess(list[i])!='':
                 newlist[j].append(list[i].split('[')[1].split(']')[0])
-    for i in newlist:
-        print(i)
+    
     for i in anti_classMap.keys():
         list = newlist[i-2]
         reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'

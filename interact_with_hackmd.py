@@ -34,10 +34,10 @@ def updateHackmd(chat_id, classification, shopname, photolink):
         undealtlist = code.split('|')[1:]
 
         dealtlist = []
-        for i in range(int(len(undealtlist)/5)):
+        for i in range(int(len(undealtlist)/(classLen+1))):
             dealtlist.append([])
-            for j in range(4):
-                dealtlist[-1].append(undealtlist[i*5+j])
+            for j in range(classLen):
+                dealtlist[-1].append(undealtlist[i*(classLen+1)+j])
 
         reverseMenu = GetReverseMenu(dealtlist)
         
@@ -47,7 +47,7 @@ def updateHackmd(chat_id, classification, shopname, photolink):
                 break
             elif i+1==len(reverseMenu[index]):
                 reverseMenu[index].append('[{}](##{})'.format(shopname, shopname))
-                for j in range(4):
+                for j in range(classLen):
                     if(j!=index):
                         reverseMenu[j].append('')
         
@@ -69,8 +69,8 @@ def updateHackmd(chat_id, classification, shopname, photolink):
     if chat_id in add_query_photolink:
         add_query_photolink.pop(chat_id)
 
-    code = split(getcode()) # len = 6
-                            # 菜單 索引 宵夜街 後門 奢侈街 山下
+    code = split(getcode()) # len = 7
+                            # 菜單 索引 宵夜街 後門 奢侈街 山下 校內
     index = classMap[classification]
     code[1] = updateIndex(code[1], index-2)
     code[index] = updatePhoto(code[index])

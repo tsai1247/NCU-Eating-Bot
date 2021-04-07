@@ -18,7 +18,7 @@ def main():
     # TODO: declaration of keywords
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CommandHandler('help', help))
-    updater.dispatcher.add_handler(CommandHandler('helpzh', help_zh))
+    updater.dispatcher.add_handler(CommandHandler('helpzh', helpzh))
     updater.dispatcher.add_handler(CommandHandler('random', randomfunc))
     updater.dispatcher.add_handler(CommandHandler('add', add))
     updater.dispatcher.add_handler(CommandHandler('search', search))
