@@ -34,13 +34,13 @@ def randomfunc(update, bot):
     if isDos(update): return
 
     chat_id = getID(update)
-    status.update({chat_id:'randomo'})
+    status.update({chat_id:'random'})
     add_query_update.update({chat_id:update})
-    list = classMap.keys()
-    list.append('無')
+    classlist = list(classMap.keys())
+    classlist.append('無')
     update.message.reply_text("有什麼要求嗎？",
         reply_markup = InlineKeyboardMarkup([[
-            InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in list
+            InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in classlist
         ]]))
     
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
@@ -93,16 +93,22 @@ def getClassification(update, bot):
             else:
                 code = split(getcode())[classMap[s]]
             rd = code.split('###')
+            if(len(rd)-1<1):
+                return ""
             ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
             return ret
 
         def sort(rand_shop):
+            if(rand_shop==""):
+                return ""
             cur = rand_shop.split('![]')
             for i in range(1, len(cur)):
                 cur[i] = cur[i].split('(')[1].split(' =400x')[0]
             return cur
 
         def push_menu(sorted_shop):
+            if(sorted_shop==""):
+                update2.message.reply_text('此分類暫時無店家')
             update2.message.reply_text(sorted_shop[0])
             for i in range(1, len(sorted_shop)):
                 update2.message.reply_photo(sorted_shop[i])
@@ -277,7 +283,7 @@ def listall(update, bot):
     newlist = []
     for j in range(len(classMap.keys())):
         newlist.append([])
-        for i in range(11+j, len(list), len(classMap.keys())+1):
+        for i in range((classLen+1)*2+1+j, len(list), len(classMap.keys())+1):
             if preprocess(list[i])!='':
                 newlist[j].append(list[i].split('[')[1].split(']')[0])
     
