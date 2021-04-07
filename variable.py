@@ -60,7 +60,7 @@ help_zh =   '以下是常用的指令: \n\
             /addtag : 在店家上新增標籤。\n\
             /report: 回報Bot的問題。\n'
 
-hint_zh =   [   '在 Telegram Deskop 上，選擇圖片檔後，取消勾選Compress images再傳送',
+hint_zh =   [   '在 Telegram Desktop 上，選擇圖片檔後，取消勾選Compress images再傳送',
                 '在 Telegram App 上，使用 file -> Gallery 選擇並傳送圖片檔',
                 '在 Telegram Web 上，使用 Send file 選擇並傳送圖片檔'
             ]
