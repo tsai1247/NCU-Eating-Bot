@@ -295,6 +295,7 @@ def listall(update, bot):
                 reply+='\n'
             elif len(shop)>max_word:
                 reply+='\n'
+                count = 0
             else:
                 for j in range(max_word-len(shop)+1):
                     reply += '\t\t\t\t'
