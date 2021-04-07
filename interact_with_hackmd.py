@@ -94,7 +94,7 @@ def getlist():  # return the table of "索引" on hackmd
     return list
 
 def getshops():   # return a list including all shops
-    tmp = getlist().split('|')[6:]
+    tmp = getlist().split('|')[classLen+2:]
     list = []
     for i in tmp:
         if(not isempty(i)):
