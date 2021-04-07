@@ -13,6 +13,7 @@ add_query_shopname = {}
 add_query_update = {}
 add_query_photolink = {}
 classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5}
+anti_classMap = {2:'宵夜街', 3:'後門', 4:'奢侈街', 5:'山下'}
 # classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5, '校內':6}
 ignore_list = [' ', '\n', '\t']
 

@@ -2,7 +2,7 @@
 # coding=UTF-8
 from fileRW import Concat_Lines
 import random
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 
 from interact_with_hackmd import *
 from interact_with_imgur import *
@@ -271,22 +271,34 @@ def clearallrequest(update, bot):
 def listall(update, bot):
     if isDos(update): return
 
-    list = getshops()
-    reply = ''
-    count = 0
-    max_word = 5
-    single_line_cnt = 3
-    for shop in list:
-        reply += shop
-        count += 1
-        if count%single_line_cnt==0:
-            reply+='\n'
-        elif len(shop)>max_word:
-            reply+='\n'
-        else:
-            for j in range(max_word-len(shop)+1):
-                reply += '\t\t\t\t'
-    update.message.reply_text(reply)
+    print(getlist())
+    list = getlist().split('|')
+    newlist = []
+    for j in range(4):
+        newlist.append([])
+        for i in range(11+j, len(list), 5):
+            if preprocess(list[i])!='':
+                newlist[j].append(list[i].split('[')[1].split(']')[0])
+    for i in newlist:
+        print(i)
+    for i in anti_classMap.keys():
+        list = newlist[i-2]
+        reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'
+        count = 0
+        max_word = 5
+        single_line_cnt = 3
+        
+        for shop in list:
+            reply += shop
+            count += 1
+            if count%single_line_cnt==0:
+                reply+='\n'
+            elif len(shop)>max_word:
+                reply+='\n'
+            else:
+                for j in range(max_word-len(shop)+1):
+                    reply += '\t\t\t\t'
+        update.message.reply_text(reply, parse_mode=ParseMode.HTML)
 
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
