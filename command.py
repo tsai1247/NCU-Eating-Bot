@@ -39,9 +39,11 @@ def randomfunc(update, bot):
     classlist = list(classMap.keys())
     classlist.append('無')
     update.message.reply_text("有什麼要求嗎？",
-        reply_markup = InlineKeyboardMarkup([[
-            InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in classlist
-        ]]))
+        reply_markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in classlist[0::2]],
+            [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in classlist[1::2]]
+            
+        ]))
     
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
@@ -64,9 +66,10 @@ def add(update, bot):
         add_query_update.update({chat_id:update})
         
         update.message.reply_text("請選擇分類",
-            reply_markup = InlineKeyboardMarkup([[
-                    InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in classMap.keys()
-                ]]))
+            reply_markup = InlineKeyboardMarkup([
+                [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in list(classMap.keys())[0::2]],
+                [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in list(classMap.keys())[1::2]]
+            ]))
 
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
@@ -177,9 +180,10 @@ def findmenu(text, update):
         else:
             add_query_update.update({chat_id:update})
             update.message.reply_text("我猜你想查",
-                reply_markup = InlineKeyboardMarkup([[
-                        InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list
-                ]]))
+                reply_markup = InlineKeyboardMarkup([
+                    [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list[0::2]],
+                    [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list[1::2]]
+                ]))
 
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
@@ -267,11 +271,16 @@ def clearallrequest(update, bot):
     if isDos(update): return
 
     chat_id = getID(update)
-    status.pop(chat_id)
-    add_query_shopname.pop(chat_id)
-    add_query_classification.pop(chat_id)
-    add_query_photolink.pop(chat_id)
-    add_query_update.pop(chat_id)
+    if chat_id in status:
+        status.pop(chat_id)
+    if chat_id in add_query_shopname:
+        add_query_shopname.pop(chat_id)
+    if chat_id in add_query_classification:
+        add_query_classification.pop(chat_id)
+    if chat_id in add_query_photolink:
+        add_query_photolink.pop(chat_id)
+    if chat_id in add_query_update:
+        add_query_update.pop(chat_id)
     update.message.reply_text("已清除您的所有要求")
 
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
@@ -291,7 +300,7 @@ def listall(update, bot):
         list = newlist[i-2]
         reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'
         count = 0
-        max_word = 5
+        max_word = 4
         single_line_cnt = 3
         
         for shop in list:
