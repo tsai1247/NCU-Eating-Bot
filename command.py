@@ -64,7 +64,7 @@ def add(update, bot):
         update.message.reply_text('新增店家 {} 於分類 {}, 新增完成。'.format(cur_shopname, cur_classification))
     else:
         add_query_update.update({chat_id:update})
-        
+        status.update({chat_id:'add_step0'})
         update.message.reply_text("請選擇分類",
             reply_markup = InlineKeyboardMarkup([
                 [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 0)) for s in list(classMap.keys())[0::2]],
@@ -76,20 +76,23 @@ def add(update, bot):
 def getClassification(update, bot):
     reply, chat_id, type = update.callback_query.data.split(" ")
     update2 = add_query_update.get(chat_id)
+    add_query_update.pop(chat_id)
     type = int(type)
 
-    if type == 0 :  # add
+    if type == 0 and status.get(chat_id)=='add_step0':  # add
         update.callback_query.edit_message_text('分類為：{}\n請輸入店家名稱'.format(reply))
+        
         status.update({chat_id:'add_step1'})
         add_query_classification[chat_id] = reply
 
-    elif int(type)==1 : # search
+    elif int(type)==1 and status.get(chat_id)=='search_step1': # search
         update.callback_query.edit_message_text(reply)
         curMenu = getMenu(reply)
+        status.pop(chat_id)
         for photolink in curMenu:
             update2.message.reply_photo(photolink)
 
-    elif int(type)==2 : # random
+    elif int(type)==2 and status.get(chat_id)=='random': # random
         def random_menu(code, s):
             if s=='無':
                 pass
@@ -119,7 +122,8 @@ def getClassification(update, bot):
         status.pop(chat_id)
         update.callback_query.edit_message_text('條件： {}'.format(reply))
         push_menu(sort(random_menu(getcode(), reply)))
-
+    else:
+        update.callback_query.edit_message_text('此要求已過期')
     appendlog(getID(update2), update2.message.from_user.full_name, reply)
 
 def search(update, bot):
@@ -178,7 +182,8 @@ def findmenu(text, update):
             update.message.reply_text('此店家不存在')
             append('non-exist-shop.txt', '{}\n'.format(text))
         else:
-            add_query_update.update({chat_id:update})
+            add_query_update.update({chat_id:update})        
+            status.update({chat_id:'search_step1'})
             update.message.reply_text("我猜你想查",
                 reply_markup = InlineKeyboardMarkup([
                     [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list[0::2]],

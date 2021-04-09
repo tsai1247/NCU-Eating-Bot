@@ -46,7 +46,7 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(Filters.photo, whengetphoto))
     updater.dispatcher.add_handler(MessageHandler(Filters.document, whengetfile))
 
-    # calbackhandler
+    # callbackhandler
     updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
 
     # error handler
