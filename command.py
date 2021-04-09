@@ -75,8 +75,13 @@ def add(update, bot):
 
 def getClassification(update, bot):
     reply, chat_id, type = update.callback_query.data.split(" ")
-    update2 = add_query_update.get(chat_id)
-    add_query_update.pop(chat_id)
+    update2 = ''
+    if chat_id in add_query_update:
+        update2 = add_query_update.get(chat_id)
+        add_query_update.pop(chat_id)
+    else:
+        update.callback_query.edit_message_text('此要求已過期')
+        return
     type = int(type)
 
     if type == 0 and status.get(chat_id)=='add_step0':  # add
