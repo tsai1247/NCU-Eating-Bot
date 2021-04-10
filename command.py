@@ -231,6 +231,7 @@ def DealWithPhotolink(update, file_id):
             else:   # first append
                 add_query_photolink[chat_id] = [photolink]
             update.message.reply_text('請繼續傳送照片或輸入 /add 結束傳送')
+            append('imagesource.txt', '{}({}): {}, {}\n'.format(chat_id, update.message.from_user.full_name, add_query_shopname.get(chat_id), photolink))
     else:
         print('ignore it')
 

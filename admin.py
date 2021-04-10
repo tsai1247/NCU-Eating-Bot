@@ -104,8 +104,8 @@ def test(bot, update):
     print('hi')
     chat_id = getID(update)
     text = 'hihi~~'    
-    bot.send_message(chat_id, text)
-
+    # bot.send_message(chat_id, text)
+    update.message.reply_text(update.toString())
     # appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def getreport(update, bot):
