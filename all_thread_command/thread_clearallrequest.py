@@ -4,7 +4,7 @@ from variable import *
 import threading
 
 
-class thread_add(threading.Thread):
+class thread_clearallrequest(threading.Thread):
     def __init__(self, update):
         threading.Thread.__init__(self)
         self.update = update
