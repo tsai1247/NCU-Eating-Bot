@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from interact_with_hackmd import Levenshtein, getMenu, getshops
-from fileRW import Concat_Lines, append, read
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import *
+from functions.interact_with_hackmd import Levenshtein, getMenu, getshops
+from functions.fileRW import Concat_Lines, append, read
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
+from functions.variable import *
 import threading, random
-from text_process import preprocess, allin
+from functions.text_process import preprocess, allin
 
 def findmenu(text, update):
     text = preprocess(text)

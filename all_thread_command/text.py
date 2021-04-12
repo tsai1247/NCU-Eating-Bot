@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from interact_with_hackmd import findmenu
-from appendlog import appendlog
-from dosdefence import getID
-from text_process import preprocess
-from variable import status, add_query_shopname
+from functions.interact_with_hackmd import findmenu
+from functions.appendlog import appendlog
+from functions.dosdefence import getID
+from functions.text_process import preprocess
+from functions.variable import status, add_query_shopname
 import threading
 
 

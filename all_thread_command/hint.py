@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from variable import hint_zh
+from functions.variable import hint_zh
 import threading
 
 class thread_hint(threading.Thread):

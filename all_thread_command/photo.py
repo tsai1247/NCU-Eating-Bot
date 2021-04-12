@@ -1,5 +1,5 @@
-from appendlog import appendlog
-from dosdefence import getID, isDos
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
 import threading
 
 class thread_photo(threading.Thread):

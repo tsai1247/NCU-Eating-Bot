@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from fileRW import append
-from interact_with_imgur import uploadAndGetPhoto
-from appendlog import appendlog
-from dosdefence import getID, isDos
+from functions.fileRW import append
+from functions.interact_with_imgur import uploadAndGetPhoto
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
 import threading
 
 

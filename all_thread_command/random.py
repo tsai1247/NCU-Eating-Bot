@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from appendlog import appendlog
-from dosdefence import getID, isDos
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from variable import status, add_query_update, classMap
+from functions.variable import status, add_query_update, classMap
 import threading
 
 class thread_random(threading.Thread):

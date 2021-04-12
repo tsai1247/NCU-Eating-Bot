@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from interact_with_hackmd import getMenu, getcode, split
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import *
+from functions.interact_with_hackmd import getMenu, getcode, split
+from functions.appendlog import appendlog
+from functions.dosdefence import getID
+from functions.variable import *
 import threading, random
 
 class thread_callback(threading.Thread):

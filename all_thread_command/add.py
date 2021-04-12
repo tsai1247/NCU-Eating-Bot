@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from appendlog import appendlog
-from telegram.inline.inlinekeyboardbutton import InlineKeyboardButton
-from telegram.inline.inlinekeyboardmarkup import InlineKeyboardMarkup
-from interact_with_hackmd import updateHackmd
-from interact_with_imgur import getNoMenuLink
-from dosdefence import getID, isDos
-from variable import *
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from functions.appendlog import appendlog
+from functions.interact_with_hackmd import updateHackmd
+from functions.interact_with_imgur import getNoMenuLink
+from functions.dosdefence import getID, isDos
+from functions.variable import *
 import threading
 
 class thread_add(threading.Thread):

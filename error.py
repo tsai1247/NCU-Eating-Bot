@@ -1,4 +1,4 @@
-from fileRW import append
+from functions.fileRW import append
 
 def error(update, context, **kwargs):
     msg = 'default msg.'

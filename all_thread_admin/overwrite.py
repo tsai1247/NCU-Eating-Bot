@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from code_compare import comapreCode
-from overwrite import overwrite
-from checkpermission import checkpermission
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import *
+from functions.code_compare import comapreCode
+from functions.overwrite import overwrite
+from functions.checkpermission import checkpermission
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
+from functions.variable import *
 import threading
 
 class thread_overwrite(threading.Thread):

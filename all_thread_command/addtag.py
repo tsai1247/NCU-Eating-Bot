@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from interact_with_hackmd import get_tags, getshops, update_tag
-from appendlog import appendlog
-from dosdefence import getID, isDos
+from functions.interact_with_hackmd import get_tags, getshops, update_tag
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
 import threading
 
 class thread_addtag(threading.Thread):

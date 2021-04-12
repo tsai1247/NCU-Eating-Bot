@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from fileRW import read
+from functions.fileRW import read
 from telegram import ParseMode
-from interact_with_hackmd import getlist
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import *
+from functions.interact_with_hackmd import getlist
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
+from functions.variable import *
 import threading
-from text_process import preprocess
+from functions.text_process import preprocess
 
 
 class thread_list(threading.Thread):

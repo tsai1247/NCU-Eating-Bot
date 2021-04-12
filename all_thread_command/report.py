@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from fileRW import Concat_Lines, append
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import *
+from functions.fileRW import Concat_Lines, append
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
+from functions.variable import *
 import threading
 
 class thread_report(threading.Thread):

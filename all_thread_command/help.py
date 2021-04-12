@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import help_en
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
+from functions.variable import help_en
 import threading
 
 class thread_help(threading.Thread):
