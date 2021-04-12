@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from thread_add import thread_add
-from all_thread_command.thread_clearallrequest import thread_clearallrequest
+from all_thread_command.importcommand import *
 from fileRW import Concat_Lines
 import random
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
@@ -13,46 +12,22 @@ from fileRW import *
 
 # TODO: the functions corresponding to each keyword
 
-def start(update, bot):
-    if isDos(update): return
-    
-    update.message.reply_text('Hello.')
-    update.message.reply_text('I am just a Eating Bot.')
-    help(update, bot)
-
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+def startbot(update, bot):
+    thread_start(update, bot).start()
 
 def help(update, bot):
-    if isDos(update): return
-    update.message.reply_text(help_en)
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    thread_help(update, bot).start()
 
 def helpzh(update, bot):
-    if isDos(update): return
-    update.message.reply_text(help_zh)
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    thread_helpzh(update, bot).start()
 
 def randomfunc(update, bot):
-    if isDos(update): return
-
-    chat_id = getID(update)
-    status.update({chat_id:'random'})
-    add_query_update.update({chat_id:update})
-    classlist = list(classMap.keys())
-    classlist.append('無')
-    update.message.reply_text("有什麼要求嗎？",
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in classlist[0::2]],
-            [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 2)) for s in classlist[1::2]]
-            
-        ]))
-    
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    thread_random(update, bot).start()
 
 def add(update, bot):
-    thread_add(update).start()
+    thread_add(update, bot).start()
 
-def getClassification(update, bot):
+def callback(update, bot):
     reply, chat_id, type = update.callback_query.data.split(" ")
     update2 = ''
     if chat_id in add_query_update:
@@ -258,7 +233,7 @@ def addtag(update, bot):
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def clearallrequest(update, bot):
-    thread_clearallrequest(update).start()
+    thread_clear(update).start()
 
 def listall(update, bot):
     if isDos(update): return

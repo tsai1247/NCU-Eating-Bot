@@ -16,7 +16,7 @@ def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
 
     # TODO: declaration of keywords
-    updater.dispatcher.add_handler(CommandHandler('start', start))
+    updater.dispatcher.add_handler(CommandHandler('start', startbot))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_handler(CommandHandler('helpzh', helpzh))
     updater.dispatcher.add_handler(CommandHandler('random', randomfunc))
@@ -47,7 +47,7 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(Filters.document, whengetfile))
 
     # callbackhandler
-    updater.dispatcher.add_handler(CallbackQueryHandler(getClassification))
+    updater.dispatcher.add_handler(CallbackQueryHandler(callback))
 
     # error handler
     updater.dispatcher.add_error_handler(error)

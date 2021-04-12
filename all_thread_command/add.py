@@ -8,12 +8,15 @@ from variable import *
 import threading
 
 class thread_add(threading.Thread):
-    def __init__(self, update):
+    def __init__(self, update, bot):
         threading.Thread.__init__(self)
         self.update = update
+        self.bot = bot
         
     def run(self):
         update = self.update
+        bot = self.bot
+        
         if isDos(update): return
         
         chat_id = getID(update)
