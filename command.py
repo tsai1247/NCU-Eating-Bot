@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from thread_add import thread_add
+from all_thread_command.thread_clearallrequest import thread_clearallrequest
 from fileRW import Concat_Lines
 import random
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
@@ -257,22 +258,7 @@ def addtag(update, bot):
     appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 def clearallrequest(update, bot):
-    if isDos(update): return
-
-    chat_id = getID(update)
-    if chat_id in status:
-        status.pop(chat_id)
-    if chat_id in add_query_shopname:
-        add_query_shopname.pop(chat_id)
-    if chat_id in add_query_classification:
-        add_query_classification.pop(chat_id)
-    if chat_id in add_query_photolink:
-        add_query_photolink.pop(chat_id)
-    if chat_id in add_query_update:
-        add_query_update.pop(chat_id)
-    update.message.reply_text("已清除您的所有要求")
-
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+    thread_clearallrequest(update).start()
 
 def listall(update, bot):
     if isDos(update): return
