@@ -1,4 +1,4 @@
-from dosdefence import getID
+from functions.dosdefence import getID
 import os
 
 def checkpermission(update):

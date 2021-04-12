@@ -1,6 +1,6 @@
 import requests
-from variable import url
-from fileRW import *
+from functions.variable import url
+from functions.fileRW import *
 
 def getSpecificCode(text):
     if text =='local':

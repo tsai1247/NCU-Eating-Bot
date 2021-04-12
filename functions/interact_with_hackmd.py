@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from dosdefence import getID
-from code_compare import comapreCode, getSpecificCode
-from fileRW import *
+from functions.dosdefence import getID
+from functions.code_compare import comapreCode, getSpecificCode
+from functions.fileRW import *
 import random
-from variable import *
-from overwrite import *
-from appendlog import appendlog
-from text_process import preprocess, allin
+from functions.variable import *
+from functions.overwrite import *
+from functions.appendlog import appendlog
+from functions.text_process import preprocess, allin
 
 def Levenshtein(str1, str2):
     str1_len = len(str1)

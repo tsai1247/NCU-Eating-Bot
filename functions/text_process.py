@@ -1,5 +1,5 @@
-from variable import ignore_list
-from fileRW import read
+from functions.variable import ignore_list
+from functions.fileRW import read
 
 def allin(small, big):
     for c in small:

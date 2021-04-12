@@ -1,4 +1,4 @@
-from variable import dos_defence, penalty, dos_maximum
+from functions.variable import dos_defence, penalty, dos_maximum
 
 def isDos(update):
     chat_id = getID(update)
