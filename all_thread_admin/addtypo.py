@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from functions import read, write, checkpermission, appendlog, getID, isDos
+from functions.fileRW import read, write
+from functions.checkpermission import checkpermission
+from functions.appendlog import appendlog
+from functions.dosdefence import getID, isDos
 import threading
 
 class thread_addtypo(threading.Thread):
