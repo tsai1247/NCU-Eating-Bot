@@ -40,7 +40,6 @@ def findmenu(text, update):
                     [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list[1::2]]
                 ]))
 
-    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
 
 
 class thread_search(threading.Thread):
