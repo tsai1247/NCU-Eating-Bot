@@ -89,7 +89,7 @@ def updateHackmd(chat_id, classification, shopname, photolink):
 
 def getcode():  # get all hackmd contents
     if(not comapreCode()):
-        appendlog("last update failed.")
+        appendlog("", "", "last update failed.")
     return getSpecificCode('local')
 
 def getlist():  # return the table of "索引" on hackmd
