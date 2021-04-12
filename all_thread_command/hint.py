@@ -1,9 +1,7 @@
-from appendlog import appendlog
-from dosdefence import getID, isDos
-from variable import *
+from variable import hint_zh
 import threading
 
-class thread_example(threading.Thread):
+class thread_hint(threading.Thread):
     def __init__(self, update, bot):
         threading.Thread.__init__(self)
         self.update = update
@@ -13,4 +11,5 @@ class thread_example(threading.Thread):
         update = self.update
         bot = self.bot
         
-        
+        for i in hint_zh:
+            update.message.reply_text(i)

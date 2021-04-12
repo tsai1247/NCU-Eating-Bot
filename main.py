@@ -42,7 +42,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('overwrite', manual_overwrite))
 
     # normal messages
-    updater.dispatcher.add_handler(MessageHandler(Filters.text, filtermsg))
+    updater.dispatcher.add_handler(MessageHandler(Filters.text, whengettext))
     updater.dispatcher.add_handler(MessageHandler(Filters.photo, whengetphoto))
     updater.dispatcher.add_handler(MessageHandler(Filters.document, whengetfile))
 
