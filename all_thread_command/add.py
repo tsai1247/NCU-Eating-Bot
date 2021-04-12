@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from appendlog import appendlog
 from telegram.inline.inlinekeyboardbutton import InlineKeyboardButton
 from telegram.inline.inlinekeyboardmarkup import InlineKeyboardMarkup

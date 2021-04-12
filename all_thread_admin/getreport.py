@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from fileRW import Concat_Lines, read
 from checkpermission import checkpermission
 from appendlog import appendlog

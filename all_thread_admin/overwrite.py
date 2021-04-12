@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from code_compare import comapreCode
 from overwrite import overwrite
 from checkpermission import checkpermission

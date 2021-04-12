@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from fileRW import read, write
 from checkpermission import checkpermission
 from appendlog import appendlog

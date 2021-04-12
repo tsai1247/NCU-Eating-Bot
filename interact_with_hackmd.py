@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 # coding=UTF-8
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from dosdefence import getID
 from code_compare import comapreCode, getSpecificCode
 from fileRW import *
-import requests, codecs
+import random
 from variable import *
 from overwrite import *
+from appendlog import appendlog
+from text_process import preprocess, allin
 
 def Levenshtein(str1, str2):
     str1_len = len(str1)
@@ -185,5 +189,37 @@ def update_tag(shopname, tags):
     overwrite('filename.txt')
     return
 
-def appendlog(text):
-    append('logger.txt', '{}\n'.format(text))
+
+def findmenu(text, update):
+    text = preprocess(text)
+    chat_id = getID(update)
+    list = getshops()
+    if text in list:
+        curMenu = getMenu(text)
+        for photolink in curMenu:
+            update.message.reply_photo(photolink)
+    else:
+        candi_list = []
+        print('keyword: {}'.format(text))
+        for shop in list:
+            if(allin(shop, text) or allin(text, shop) or Levenshtein(shop, text)<2):
+                candi_list.append(shop)
+        
+        if(len(candi_list)>5):
+            random.shuffle(candi_list)
+            candi_list = candi_list[0:5]
+
+        if(len(candi_list)==0):
+            update.message.reply_text('此店家不存在')
+            append('non-exist-shop.txt', '{}\n'.format(text))
+        else:
+            add_query_update.update({chat_id:update})        
+            status.update({chat_id:'search_step1'})
+            update.message.reply_text("我猜你想查",
+                reply_markup = InlineKeyboardMarkup([
+                    [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list[0::2]],
+                    [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 1)) for s in candi_list[1::2]]
+                ]))
+
+    appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+

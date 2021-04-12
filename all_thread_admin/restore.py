@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from checkpermission import checkpermission
 from overwrite import overwrite
 from fileRW import read, Concat_Lines, write

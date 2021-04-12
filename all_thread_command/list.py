@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from fileRW import read
 from telegram import ParseMode
 from interact_with_hackmd import getlist
@@ -5,20 +7,7 @@ from appendlog import appendlog
 from dosdefence import getID, isDos
 from variable import *
 import threading
-
-
-def preprocess(text):
-    ignorespace = ''
-    for i in text:
-        if i not in ignore_list:
-            ignorespace+=i
-    text = ignorespace
-    r = read('typo.json')
-    for key in r:
-        for typo in r[key]:
-            text = text.replace(typo, key)
-
-    return text
+from text_process import preprocess
 
 
 class thread_list(threading.Thread):

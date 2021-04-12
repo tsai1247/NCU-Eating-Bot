@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from all_thread_command.help import thread_help
 from appendlog import appendlog
 from dosdefence import getID, isDos

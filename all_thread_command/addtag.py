@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from interact_with_hackmd import get_tags, getshops, update_tag
 from appendlog import appendlog
 from dosdefence import getID, isDos

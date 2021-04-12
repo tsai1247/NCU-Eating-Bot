@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from fileRW import Concat_Lines, append
 from appendlog import appendlog
 from dosdefence import getID, isDos

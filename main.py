@@ -4,7 +4,6 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 from dotenv import load_dotenv
 
 from admin import *
-from interact_with_hackmd import *
 from command import *
 from error import *
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding=UTF-8
 from fileRW import append
 from interact_with_imgur import uploadAndGetPhoto
 from appendlog import appendlog
