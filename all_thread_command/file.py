@@ -4,6 +4,7 @@ from functions.fileRW import append
 from functions.interact_with_imgur import uploadAndGetPhoto
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
+from functions.variable import *
 import threading
 
 
