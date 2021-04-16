@@ -29,8 +29,8 @@ class thread_callback(threading.Thread):
         type = int(type)
 
         if type == 0 and status.get(chat_id)=='add_step0':  # add
-            update.callback_query.edit_message_text('分類為：{}\n請輸入店家名稱'.format(reply))
-            update.callback_query.edit_message_reply_markup(reply_markup = ForceReply())
+            update.callback_query.edit_message_text('分類為：{}\n'.format(reply))
+            update2.message.reply_text('請輸入店家名稱', reply_markup = ForceReply())
             
             status.update({chat_id:'add_step1'})
             add_query_classification[chat_id] = reply
