@@ -102,7 +102,7 @@ class thread_callback(threading.Thread):
                         else:
                             for j in range(max_word-len(shop)+1):
                                 reply += '\t\t\t\t'
-                update.message.reply_text(reply, parse_mode=ParseMode.HTML)
+                    update.message.reply_text(reply, parse_mode=ParseMode.HTML)
         else:
             update.callback_query.edit_message_text('此要求已過期')
         appendlog(getID(update2), update2.message.from_user.full_name, reply)
