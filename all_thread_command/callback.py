@@ -88,6 +88,7 @@ class thread_callback(threading.Thread):
                 if user_reply==anti_classMap[i] or user_reply=='無':
                     list = newlist[i-2]
                     reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'
+                    
                     count = 0
                     max_word = 4
                     single_line_cnt = 3
@@ -103,7 +104,7 @@ class thread_callback(threading.Thread):
                         else:
                             for j in range(max_word-len(shop)+1):
                                 reply += '\t\t\t\t'
-                    update.message.reply_text(reply, parse_mode=ParseMode.HTML)
+                    update2.message.reply_text(reply, parse_mode=ParseMode.HTML)
         else:
             update.callback_query.edit_message_text('此要求已過期')
         appendlog(getID(update2), update2.message.from_user.full_name, reply)
