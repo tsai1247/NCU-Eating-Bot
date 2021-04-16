@@ -1,5 +1,6 @@
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
+from telegram import ForceReply
 import threading
 
 class thread_photo(threading.Thread):
@@ -14,6 +15,6 @@ class thread_photo(threading.Thread):
         
         if isDos(update): return
         update.message.reply_text('為確保資料完整性，請上傳未壓縮照片( /hint )。')
-        update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。')
+        update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。', reply_markup = ForceReply(selective=True))
         # DealWithPhotolink(update, update.message.photo[0].file_id)
         appendlog(getID(update), update.message.from_user.full_name, 'getphoto')

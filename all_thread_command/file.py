@@ -5,6 +5,7 @@ from functions.interact_with_imgur import uploadAndGetPhoto
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
 from functions.variable import *
+from telegram import ForceReply
 import threading
 
 
@@ -19,7 +20,7 @@ def DealWithPhotolink(update, file_id):
                 add_query_photolink[chat_id].append(photolink)
             else:   # first append
                 add_query_photolink[chat_id] = [photolink]
-            update.message.reply_text('請繼續傳送照片或輸入 /add 結束傳送')
+            update.message.reply_text('請繼續傳送照片或輸入 /add 結束傳送', reply_markup = ForceReply(selective=True))
             append('imagesource.txt', '{}({}): {}, {}\n'.format(chat_id, update.message.from_user.full_name, add_query_shopname.get(chat_id), photolink))
     else:
         print('ignore it')

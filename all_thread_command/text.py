@@ -30,11 +30,11 @@ class thread_text(threading.Thread):
                 status.update({chat_id:'add_step2'})
                 add_query_shopname.update({chat_id:preprocess(text)})
                 update.message.reply_text('新增店家名稱為{}\n請傳送未壓縮照片( /hint ) 或重新輸入名稱'.format(add_query_shopname[chat_id]))
-                update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。', reply_markup = ForceReply())
+                update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。', reply_markup = ForceReply(selective=True))
             elif state == 'add_step2':
                 add_query_shopname.update({chat_id:preprocess(text)})
                 update.message.reply_text('更改店家名稱為{}\n請傳送未壓縮照片( /hint ) 或重新輸入名稱'.format(add_query_shopname[chat_id]))
-                update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。', reply_markup = ForceReply())
+                update.message.reply_text('店家無菜單或傳送完畢請輸入 /add 結束傳送。', reply_markup = ForceReply(selective=True))
         else:
             print('ignore it')
 
