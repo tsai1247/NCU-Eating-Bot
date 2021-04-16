@@ -14,7 +14,7 @@ class thread_hint(threading.Thread):
         update = self.update
         bot = self.bot
         
-        for i in len(hint_zh):
+        for i in range(len(hint_zh)):
             if i==len(hint_zh)-1:
                 update.message.reply_text(hint_zh[i], reply_markup = ForceReply(selective=True))
             else:
