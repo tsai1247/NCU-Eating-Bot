@@ -75,6 +75,7 @@ class thread_callback(threading.Thread):
             push_menu(sort(random_menu(getcode(), reply)))
         elif type==3:
             update.callback_query.edit_message_text(reply)
+            user_reply = reply
             list = getlist().split('|')
             newlist = []
             for j in range(len(classMap.keys())):
@@ -84,7 +85,7 @@ class thread_callback(threading.Thread):
                         newlist[j].append(list[i].split('[')[1].split(']')[0])
             
             for i in anti_classMap.keys():
-                if reply==anti_classMap[i] or reply=='無':
+                if user_reply==anti_classMap[i] or user_reply=='無':
                     list = newlist[i-2]
                     reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'
                     count = 0
