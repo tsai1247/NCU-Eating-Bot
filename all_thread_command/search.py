@@ -58,7 +58,7 @@ class thread_search(threading.Thread):
 
         if len(text) == 1:  # just /search
             status.update({chat_id:'search'})
-            update.message.reply_text('請輸入店家名稱', reply_markup = ForceReply())
+            update.message.reply_text('請輸入店家名稱', reply_markup = ForceReply(selective=True))
 
         else:   # /search with keyword
             keyword = preprocess(Concat_Lines(text[1:]))
