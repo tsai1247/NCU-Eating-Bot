@@ -4,7 +4,9 @@ from functions.interact_with_hackmd import getMenu, getcode, split
 from functions.appendlog import appendlog
 from functions.dosdefence import getID
 from functions.variable import *
+from telegram import ForceReply
 import threading, random
+
 
 class thread_callback(threading.Thread):
     def __init__(self, update, bot):
@@ -27,7 +29,7 @@ class thread_callback(threading.Thread):
         type = int(type)
 
         if type == 0 and status.get(chat_id)=='add_step0':  # add
-            update.callback_query.edit_message_text('分類為：{}\n請輸入店家名稱'.format(reply))
+            update.callback_query.edit_message_text('分類為：{}\n請輸入店家名稱'.format(reply), reply_markup = ForceReply())
             
             status.update({chat_id:'add_step1'})
             add_query_classification[chat_id] = reply

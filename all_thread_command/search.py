@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
 from functions.interact_with_hackmd import Levenshtein, getMenu, getshops
 from functions.fileRW import Concat_Lines, append, read
 from functions.appendlog import appendlog
@@ -58,7 +58,7 @@ class thread_search(threading.Thread):
 
         if len(text) == 1:  # just /search
             status.update({chat_id:'search'})
-            update.message.reply_text('請輸入店家名稱')
+            update.message.reply_text('請輸入店家名稱', reply_markup = ForceReply())
 
         else:   # /search with keyword
             keyword = preprocess(Concat_Lines(text[1:]))
