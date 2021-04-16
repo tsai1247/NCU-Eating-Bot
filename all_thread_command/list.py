@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from functions.fileRW import read
-from telegram import ParseMode
+from telegram import ParseMode, InlineKeyboardButton, InlineKeyboardMarkup
 from functions.interact_with_hackmd import getlist
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
@@ -22,32 +22,17 @@ class thread_list(threading.Thread):
         
         if isDos(update): return
 
-        list = getlist().split('|')
-        newlist = []
-        for j in range(len(classMap.keys())):
-            newlist.append([])
-            for i in range((classLen+1)*2+1+j, len(list), len(classMap.keys())+1):
-                if preprocess(list[i])!='':
-                    newlist[j].append(list[i].split('[')[1].split(']')[0])
-        
-        for i in anti_classMap.keys():
-            list = newlist[i-2]
-            reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'
-            count = 0
-            max_word = 4
-            single_line_cnt = 3
-            
-            for shop in list:
-                reply += shop
-                count += 1
-                if count%single_line_cnt==0:
-                    reply+='\n'
-                elif len(shop)>max_word:
-                    reply+='\n'
-                    count = 0
-                else:
-                    for j in range(max_word-len(shop)+1):
-                        reply += '\t\t\t\t'
-            update.message.reply_text(reply, parse_mode=ParseMode.HTML)
+        chat_id = getID(update)
+        status.update({chat_id:'random'})
+        add_query_update.update({chat_id:update})
+        classlist = list(classMap.keys())
+        classlist.append('無')
+        update.message.reply_text("有什麼要求嗎？",
+            reply_markup = InlineKeyboardMarkup([
+                [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 3)) for s in classlist[0::2]],
+                [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 3)) for s in classlist[1::2]]
+                
+            ]))
+
 
         appendlog(getID(update), update.message.from_user.full_name, update.message.text)
