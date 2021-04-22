@@ -2,6 +2,7 @@
 # coding=UTF-8
 import os
 from dotenv import load_dotenv
+import threading
 
 load_dotenv() # Loading environment variable from .env file
 
@@ -68,3 +69,6 @@ hint_zh =   [   '在 Telegram Desktop 上，選擇圖片檔後，取消勾選Com
                 '在 Telegram App 上，使用 file -> Gallery 選擇並傳送圖片檔',
                 '在 Telegram Web 上，使用 Send file 選擇並傳送圖片檔'
             ]
+
+lock_filename = threading.Lock()
+lock_imgur = threading.Lock()
