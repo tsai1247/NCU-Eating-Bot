@@ -15,11 +15,11 @@ def DealWithPhotolink(update, file_id):
         state = status.get(chat_id)
         if state == 'add_step2' or state == 'photo_update':
             if chat_id not in add_query_photo_lock:
-                status.update(chat_id, 'photo_update')
-                add_query_photo_lock.update(chat_id, threading.Lock())
-                add_query_photo_num.update(chat_id, 0)
+                status.update({chat_id : 'photo_update'})
+                add_query_photo_lock.update({chat_id : threading.Lock()})
+                add_query_photo_num.update({chat_id : 0})
 
-            add_query_photo_num.update(chat_id, add_query_photo_num.get(chat_id)+1)
+            add_query_photo_num.update({chat_id : add_query_photo_num.get(chat_id)+1})
 
             add_query_photo_lock.get(chat_id).acquire()
             update.message.reply_text('正在取得照片...')
@@ -30,9 +30,9 @@ def DealWithPhotolink(update, file_id):
                 add_query_photolink[chat_id] = [photolink]
             
             
-            add_query_photo_num.update(chat_id, add_query_photo_num.get(chat_id)-1)
+            add_query_photo_num.update({chat_id : add_query_photo_num.get(chat_id)-1})
             if add_query_photo_num.get(chat_id)==0:
-                status.update(chat_id, 'add_step2')
+                status.update({chat_id : 'add_step2'})
                 update.message.reply_text('請繼續傳送照片或輸入 /add 結束傳送', reply_markup = ForceReply(selective=True))
             add_query_photo_lock.get(chat_id).release()
 
