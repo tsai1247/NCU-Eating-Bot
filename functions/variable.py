@@ -13,6 +13,8 @@ add_query_classification = {}
 add_query_shopname = {}
 add_query_update = {}
 add_query_photolink = {}
+add_query_photo_num = {}
+add_query_photo_lock = {}
 classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5, '校內':6}
 classLen = len(classMap.keys())
 anti_classMap = {}
@@ -71,4 +73,3 @@ hint_zh =   [   '在 Telegram Desktop 上，選擇圖片檔後，取消勾選Com
             ]
 
 lock_filename = threading.Lock()
-lock_imgur = threading.Lock()

@@ -21,6 +21,10 @@ class thread_add(threading.Thread):
         if isDos(update): return
         
         chat_id = getID(update)
+        while status.get(chat_id) == "photo_update":
+            add_query_photo_lock.get(chat_id).acquire()
+            add_query_photo_lock.get(chat_id).release()
+
         if status.get(chat_id) == "add_step2":
             status.pop(chat_id)
             update.message.reply_text('正在新增店家...')
