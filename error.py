@@ -1,4 +1,5 @@
 from functions.fileRW import append
+import time
 
 def error(update, context, **kwargs):
     msg = 'default msg.'
@@ -13,5 +14,5 @@ def error(update, context, **kwargs):
                 msg = 'Error from {}.\n'.format(update.message.chat_id)
             except:
                 msg = 'Error\n'
-    append('logger.txt', msg)
+    append('logger.txt', '[{}] {}'.format(time.strftime('%Y/%m/%d\t%H:%M:%S'), msg))
     update.message.reply_text('未知異常發生，請稍後再試。\n如有問題請使用 /report 指令\n或洽 jeff29cc91079@gmail.com ，謝謝')
