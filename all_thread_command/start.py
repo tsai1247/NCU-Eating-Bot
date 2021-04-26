@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from all_thread_command.help import thread_help
+from functions.variable import help_en
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
 import threading
@@ -16,11 +17,9 @@ class thread_start(threading.Thread):
         bot = self.bot
         
         if isDos(update): return
+
         update.message.reply_text('Hello.')
         update.message.reply_text('I am just a Eating Bot.')
-        subthread = thread_help(update, self.bot)
-        subthread.start()
-        subthread.join()
-
+        update.message.reply_text(help_en)
 
         appendlog(getID(update), update.message.from_user.full_name, update.message.text)

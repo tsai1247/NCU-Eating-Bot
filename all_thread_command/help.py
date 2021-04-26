@@ -14,6 +14,9 @@ class thread_help(threading.Thread):
     def run(self):
         update = self.update
         bot = self.bot
+
         if isDos(update): return
+        
         update.message.reply_text(help_en)
+
         appendlog(getID(update), update.message.from_user.full_name, update.message.text)
