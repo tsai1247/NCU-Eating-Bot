@@ -14,3 +14,4 @@ def error(update, context, **kwargs):
             except:
                 msg = 'Error\n'
     append('logger.txt', msg)
+    update.message.reply_text('未知異常發生，請稍後再試。\n如有問題請使用 /report 指令\n或洽 jeff29cc91079@gmail.com ，謝謝')
