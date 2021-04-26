@@ -18,10 +18,10 @@ class thread_test(threading.Thread):
         
         if isDos(update): return
         if(not checkpermission(update)):   return
-        
-        print('hi')
+ 
+        # print('hi')
         chat_id = getID(update)
         text = 'hihi~~'    
-        # bot.send_message(chat_id, text)
-        update.message.reply_text(update.toString())
+        bot.send_message(chat_id, text)
+        # update.message.reply_text(update.toString())
         # appendlog(getID(update), update.message.from_user.full_name, update.message.text)
