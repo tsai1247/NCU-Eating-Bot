@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # coding=UTF-8
+import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from dotenv import load_dotenv
 
 from admin import *
 from command import *
+from protectedCommand import *
 from error import *
 
 # preparation
@@ -27,6 +29,13 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('listall', listall))
     updater.dispatcher.add_handler(CommandHandler('report', report))
     updater.dispatcher.add_handler(CommandHandler('hint', hint))
+
+    # protected commands
+    updater.dispatcher.add_handler(CommandHandler('delete', delete))
+    updater.dispatcher.add_handler(CommandHandler('del', delete))
+    updater.dispatcher.add_handler(CommandHandler('modify', edit))
+    updater.dispatcher.add_handler(CommandHandler('edit', edit))
+
 
     # admin commands
     updater.dispatcher.add_handler(CommandHandler('xhelp', xhelp))
