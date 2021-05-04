@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from all_thread_command.importcommand import *
+from all_thread_command.importall import *
 
 def startbot(update, bot):
     thread_start(update, bot).start()

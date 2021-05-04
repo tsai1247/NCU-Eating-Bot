@@ -1,4 +1,4 @@
-from all_thread_admin.importadmin import *
+from all_thread_admin.importall import *
 
 # functions for commands
 def backup(update, bot):
