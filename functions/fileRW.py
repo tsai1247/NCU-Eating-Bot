@@ -30,7 +30,4 @@ def append(filename, data):
     lock_filename.release()
 
 def Concat_Lines(lines):
-    ret = ''
-    for line in lines:
-        ret += line
-    return ret
+    return ''.join(lines)
