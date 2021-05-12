@@ -5,6 +5,5 @@ from all_thread_protectedCommand.importall import *
 def delete(update, bot):
     thread_delete(update, bot).start()
 
-    
 def edit(update, bot):
     thread_edit(update, bot).start()

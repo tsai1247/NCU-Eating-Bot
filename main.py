@@ -17,6 +17,7 @@ def main():
     updater = Updater( os.getenv("TELEGRAM_TOKEN") )
 
     # TODO: declaration of keywords
+    # all_thread_command
     updater.dispatcher.add_handler(CommandHandler('start', startbot))
     updater.dispatcher.add_handler(CommandHandler('help', help))
     updater.dispatcher.add_handler(CommandHandler('helpzh', helpzh))
@@ -30,14 +31,13 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('report', report))
     updater.dispatcher.add_handler(CommandHandler('hint', hint))
 
-    # protected commands
+    # all_thread_protectedcommand
     updater.dispatcher.add_handler(CommandHandler('delete', delete))
     updater.dispatcher.add_handler(CommandHandler('del', delete))
     updater.dispatcher.add_handler(CommandHandler('modify', edit))
     updater.dispatcher.add_handler(CommandHandler('edit', edit))
 
-
-    # admin commands
+    # all_thread_admin
     updater.dispatcher.add_handler(CommandHandler('xhelp', xhelp))
     updater.dispatcher.add_handler(CommandHandler('xhelpzh', xhelpzh))
     updater.dispatcher.add_handler(CommandHandler('clear', clearallrequest))
