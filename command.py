@@ -46,3 +46,6 @@ def listall(update, bot):
 
 def report(update, bot):
     thread_report(update, bot).start()
+
+def electric(update, bot):
+	thread_electric(update, bot).start()

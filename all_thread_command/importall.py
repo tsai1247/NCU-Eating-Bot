@@ -13,3 +13,4 @@ from all_thread_command.addtag import *
 from all_thread_command.clear import *
 from all_thread_command.list import *
 from all_thread_command.report import *
+from all_thread_command.electric import *

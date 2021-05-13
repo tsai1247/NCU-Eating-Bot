@@ -30,6 +30,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('listall', listall))
     updater.dispatcher.add_handler(CommandHandler('report', report))
     updater.dispatcher.add_handler(CommandHandler('hint', hint))
+    updater.dispatcher.add_handler(CommandHandler('electric', electric))
 
     # all_thread_protectedcommand
     updater.dispatcher.add_handler(CommandHandler('delete', delete))
