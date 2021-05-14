@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from functions.text_process import preprocess
-from functions.interact_with_hackmd import getMenu, getcode, getlist, split
 from functions.appendlog import appendlog
 from functions.dosdefence import getID
 from functions.variable import *
@@ -38,73 +36,71 @@ class thread_callback(threading.Thread):
 
         elif type==1 and status.get(chat_id)=='search_step1': # search
             update.callback_query.edit_message_text(reply)
-            curMenu = getMenu(reply)
+            curMenu = curMD.getMenu(reply)
             status.pop(chat_id)
             for photolink in curMenu:
                 update2.message.reply_photo(photolink)
 
         elif type==2 and status.get(chat_id)=='random': # random
-            def random_menu(code, s):
-                if s=='無':
-                    pass
+            def random_shop(category):
+                if category == '無':
+                    list = []
+                    for i in curMD.getshops():
+                        list += i
                 else:
-                    code = split(getcode())[classMap[s]]
-                rd = code.split('###')
-                if(len(rd)-1<1):
-                    return ""
-                ret = rd[random.randint(1, len(rd)-1)].split('###')[0]
-                return ret
+                    list = curMD.getshops()[classMap[category]-2]
+                
+                random.shuffle(list)
+                if list == []:
+                    return None
+                else:
+                    return list[0]
 
-            def sort(rand_shop):
-                if(rand_shop==""):
-                    return ""
-                cur = rand_shop.split('![]')
-                for i in range(1, len(cur)):
-                    cur[i] = cur[i].split('(')[1].split(' =400x')[0]
-                return cur
-
-            def push_menu(sorted_shop):
-                if(sorted_shop==""):
+            def push_menu(curShop, curMenu):
+                if(curMenu==[]):
                     update2.message.reply_text('此分類暫時無店家')
-                update2.message.reply_text(sorted_shop[0])
-                for i in range(1, len(sorted_shop)):
-                    update2.message.reply_photo(sorted_shop[i])
+                    return
+                update2.message.reply_text(curShop)
+                for link in curMenu:
+                    update2.message.reply_photo(link)
             
             status.pop(chat_id)
             update.callback_query.edit_message_text('條件： {}'.format(reply))
-            push_menu(sort(random_menu(getcode(), reply)))
-        elif type==3:
-            update.callback_query.edit_message_text(reply)
+            curShop = random_shop(reply)
+            push_menu(curShop, curMD.getMenu(curShop))
+
+        elif type==3: #list
+            update.callback_query.edit_message_text(reply)  # reply is the category
             user_reply = reply
-            list = getlist().split('|')
-            newlist = []
-            for j in range(len(classMap.keys())):
-                newlist.append([])
-                for i in range((classLen+1)*2+1+j, len(list), len(classMap.keys())+1):
-                    if preprocess(list[i])!='':
-                        newlist[j].append(list[i].split('[')[1].split(']')[0])
+
+            if user_reply =='無':
+                list = []
+                for i in curMD.getshops():
+                    list += i
+            else:
+                list = curMD.getshops()[classMap[user_reply]-2]
+
+            reply = ''
             
-            for i in anti_classMap.keys():
-                if user_reply==anti_classMap[i] or user_reply=='無':
-                    list = newlist[i-2]
-                    reply = '<b><i>' + anti_classMap[i] + '</i></b>：\n'
-                    
+            count = 0
+            max_word = 4
+            single_line_cnt = 3
+            
+            for shop in list:
+                reply += shop
+                count += 1
+                if count%single_line_cnt==0:
+                    reply+='\n'
+                elif len(shop)>max_word:
+                    reply+='\n'
                     count = 0
-                    max_word = 4
-                    single_line_cnt = 3
-                    
-                    for shop in list:
-                        reply += shop
-                        count += 1
-                        if count%single_line_cnt==0:
-                            reply+='\n'
-                        elif len(shop)>max_word:
-                            reply+='\n'
-                            count = 0
-                        else:
-                            for j in range(max_word-len(shop)+1):
-                                reply += '\t\t\t\t'
-                    update2.message.reply_text(reply, parse_mode=ParseMode.HTML)
+                else:
+                    for j in range(max_word-len(shop)+1):
+                        reply += '\t\t\t\t'
+            if reply =='':
+                reply = '此分類暫時無店家'
+            update2.message.reply_text(reply, parse_mode=ParseMode.HTML)
+
         else:
             update.callback_query.edit_message_text('此要求已過期')
         appendlog(getID(update2), update2.message.from_user.full_name, reply)

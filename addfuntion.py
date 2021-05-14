@@ -27,7 +27,7 @@ function_name = input(  'Function name:\n' +
 
 
 # fileRW
-if dic==1:
+if dic==1: # admin
     write('all_thread_admin/{}.py'.format(function_name), (
         '#!/usr/bin/env python3\n' + 
         '# coding=UTF-8\n' +
@@ -71,7 +71,7 @@ if dic==1:
 
     os.system('start ./all_thread_admin/{}.py'.format(function_name))
 
-elif dic==2:
+elif dic==2: # lower permission
     
     write('all_thread_protectedCommand/{}.py'.format(function_name), (
         '#!/usr/bin/env python3\n' + 
@@ -118,7 +118,7 @@ elif dic==2:
     os.system('start ./all_thread_protectedCommand/{}.py'.format(function_name))
 
 
-elif dic==3:
+elif dic==3: # normal command
     
     write('all_thread_command/{}.py'.format(function_name), (
         '#!/usr/bin/env python3\n' + 
@@ -137,6 +137,7 @@ elif dic==3:
         '\t\tupdate = self.update\n' +
         '\t\tbot = self.bot\n' +
                 '\n' +
+        '\t\tif isDos(update): return\n' +
         '\t\t\n' +
         '\t\t# TODO: what the function do.\n' +
         '\t\t\n' +
@@ -160,6 +161,6 @@ elif dic==3:
 
     os.system('start ./all_thread_command/{}.py'.format(function_name))
 
-elif dic==4:
+elif dic==4: # normal function
     write('functions/{}.py'.format(function_name), '\ndef {}():\n\tpass\n'.format(function_name))
     os.system('start ./functions/{}.py'.format(function_name))

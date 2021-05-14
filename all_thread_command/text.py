@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from functions.interact_with_hackmd import findmenu
+# from functions.interact_with_hackmd import findmenu
 from functions.appendlog import appendlog
 from functions.dosdefence import getID
 from functions.text_process import preprocess
-from functions.variable import status, add_query_shopname
+from functions.variable import status, add_query_shopname, curMD
 from telegram import ForceReply
 import threading
 
@@ -25,7 +25,20 @@ class thread_text(threading.Thread):
             state = status[chat_id]
             if state == 'search':
                 status.pop(chat_id)
-                findmenu(text, update)
+
+                # TODO: input: keyword(str), output: possible answers(str list)
+                allShop = curMD.getshops()
+                print(allShop)
+                for i in range(len(allShop)):
+                    if text in allShop[i]:
+                        links = curMD.getMenu(text)
+                        update.message.reply_text(text)
+                        for link in links:
+                            update.message.reply_photo(link)
+                        return
+                update.message.reply_text('目前只提供完全匹配名稱搜尋')
+                update.message.reply_text('找不到此店家')
+                
             elif state == 'add_step1':
                 status.update({chat_id:'add_step2'})
                 add_query_shopname.update({chat_id:preprocess(text)})

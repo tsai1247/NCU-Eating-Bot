@@ -2,6 +2,7 @@ from functions.fileRW import append
 import time
 
 def error(update, context, **kwargs):
+    print('something error')
     msg = 'default msg.'
     try:
         error = context.error

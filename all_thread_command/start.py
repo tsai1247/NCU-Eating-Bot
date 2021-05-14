@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from all_thread_command.help import thread_help
 from functions.variable import help_en
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos

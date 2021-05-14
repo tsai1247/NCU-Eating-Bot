@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from functions.code_compare import comapreCode
+# from functions.code_compare import comapreCode
 from functions.overwrite import overwrite
 from functions.checkpermission import checkpermission
 from functions.appendlog import appendlog
@@ -44,11 +44,11 @@ class thread_overwrite(threading.Thread):
         for i in range(int(textlist[2])):
             update.message.reply_text('try overwriting with {}, {} time(s).'.format(textlist[1], i+1))
             overwrite(textlist[1])
-            if comapreCode():
-                update.message.reply_text('上傳成功')
-                break
-            else:
-                update.message.reply_text('上傳失敗')
-                break
+            # if comapreCode():
+            #     update.message.reply_text('上傳成功')
+            #     break
+            # else:
+            #     update.message.reply_text('上傳失敗')
+            #     break
 
         appendlog(getID(update), update.message.from_user.full_name, update.message.text)

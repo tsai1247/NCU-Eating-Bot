@@ -6,4 +6,4 @@ from all_thread_admin.xhelpzh import *
 from all_thread_admin.addtypo import *
 from all_thread_admin.test import *
 from all_thread_admin.getreport import *
-from all_thread_admin.overwrite import *
+# from all_thread_admin.overwrite import *

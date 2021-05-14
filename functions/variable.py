@@ -2,9 +2,10 @@
 # coding=UTF-8
 import os
 from dotenv import load_dotenv
-import threading
+from functions.MD import *
 
 load_dotenv() # Loading environment variable from .env file
+curMD = MD()
 
 # normal variable
 url = os.getenv("MD_SOURCE")
@@ -15,11 +16,6 @@ add_query_update = {}
 add_query_photolink = {}
 add_query_photo_num = {}
 add_query_photo_lock = {}
-classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5, '校內':6}
-classLen = len(classMap.keys())
-anti_classMap = {}
-for key in classMap.keys():
-    anti_classMap[classMap[key]] = key
 
 ignore_list = [' ', '\n', '\t']
 
@@ -71,5 +67,3 @@ hint_zh =   [   '在 Telegram Desktop 上，選擇圖片檔後，取消勾選Com
                 '在 Telegram App 上，使用 file -> Gallery 選擇並傳送圖片檔',
                 '在 Telegram Web 上，使用 Send file 選擇並傳送圖片檔'
             ]
-
-lock_filename = threading.Lock()

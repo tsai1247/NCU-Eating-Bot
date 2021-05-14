@@ -1,5 +1,7 @@
 import codecs, json
-from functions.variable import lock_filename
+import threading
+
+lock_filename = threading.Lock()
 
 def read(filename):
     lock_filename.acquire()

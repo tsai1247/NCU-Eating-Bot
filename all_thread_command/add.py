@@ -2,7 +2,6 @@
 # coding=UTF-8
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from functions.appendlog import appendlog
-from functions.interact_with_hackmd import updateHackmd
 from functions.interact_with_imgur import getNoMenuLink
 from functions.dosdefence import getID, isDos
 from functions.variable import *
@@ -34,7 +33,7 @@ class thread_add(threading.Thread):
                 cur_photolink = add_query_photolink.get(chat_id)
             else:
                 cur_photolink = [getNoMenuLink()]
-            updateHackmd(chat_id, cur_classification, cur_shopname, cur_photolink)
+            curMD.add(cur_classification, cur_shopname, menus=cur_photolink, pushNow=True)
             update.message.reply_text('新增店家 {} 於分類 {}, 新增完成。'.format(cur_shopname, cur_classification))
         else:
             add_query_update.update({chat_id:update})

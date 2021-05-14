@@ -24,4 +24,4 @@ class thread_test(threading.Thread):
         text = 'hihi~~'    
         bot.send_message(chat_id, text)
         # update.message.reply_text(update.toString())
-        # appendlog(getID(update), update.message.from_user.full_name, update.message.text)
+        appendlog(getID(update), update.message.from_user.full_name, update.message.text)

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
-from functions.interact_with_hackmd import Levenshtein, getMenu, getshops
 from functions.fileRW import Concat_Lines, append, read
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
 from functions.variable import *
 import threading, random
 from functions.text_process import preprocess, allin
+from functions.Levenshtein import Levenshtein
 
 def findmenu(text, update):
     text = preprocess(text)
     chat_id = getID(update)
-    list = getshops()
+    list = curMD.getshops()
     if text in list:
-        curMenu = getMenu(text)
+        curMenu = curMD.getMenu(text)
         for photolink in curMenu:
             update.message.reply_photo(photolink)
     else:

@@ -19,7 +19,12 @@ class thread_addtypo(threading.Thread):
         if isDos(update): return
         if(not checkpermission(update)):   return
 
-        correct, wrong = update.message.text[len('/addtypo '):].split()
+        try:
+            correct, wrong = update.message.text[len('/addtypo '):].split()
+        except:
+            update.message.reply_text('格式錯誤，請使用格式')
+            update.message.reply_text('/addtypo 正確詞 錯誤詞')
+            return
         r = read("typo.json")
         if correct in r:    r[correct].append(wrong)
         else:   r[correct] = [wrong]

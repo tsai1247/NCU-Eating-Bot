@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 # coding=UTF-8
-from functions.fileRW import read
-from telegram import ParseMode, InlineKeyboardButton, InlineKeyboardMarkup
-from functions.interact_with_hackmd import getlist
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
 from functions.variable import *
 import threading
-from functions.text_process import preprocess
 
 
 class thread_list(threading.Thread):

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from functions.fileRW import Concat_Lines, read, write
-from functions.overwrite import overwrite
 from functions.checkpermission import checkpermission
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
@@ -22,7 +21,7 @@ class thread_undo(threading.Thread):
         if(not checkpermission(update)):   return
 
         update.message.reply_text("還原中...")
-        overwrite('filename_auto_back_up.txt')
+        # overwrite('filename_auto_back_up.txt')
         curData = Concat_Lines(read('filename.txt'))
         write('filename.txt', Concat_Lines(read('filename_auto_back_up.txt')))
         write('filename_auto_back_up.txt', curData)

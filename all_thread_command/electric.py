@@ -13,7 +13,8 @@ class thread_electric(threading.Thread):
 	def run(self):
 		update = self.update
 		bot = self.bot
-
+		
+		if isDos(update): return
 		
 		update.message.reply_text('Bot正常運作中')
 		update.message.reply_text('現在顯然有電')

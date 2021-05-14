@@ -1,5 +1,10 @@
 from functions.fileRW import *
-from functions.variable import *
+
+classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5, '校內':6}
+classLen = len(classMap.keys())
+anti_classMap = {}
+for key in classMap.keys():
+    anti_classMap[classMap[key]] = key
 
 class MD:
     # 建構式
@@ -16,6 +21,7 @@ class MD:
     self.images
     '''
 
+    # private functions
     def pull(self):
         self.text = Concat_Lines(read(self.filename))
         
@@ -35,6 +41,7 @@ class MD:
         for i in range(len(self.shops)):
             for j in range(len(self.shops[i])):
                 self.shops[i][j] = self.shops[i][j].split('\n')[0]
+        
         
 
 
@@ -60,7 +67,6 @@ class MD:
                     curShopUrl[k] = curShopUrl[k].split('![](')[1].split(' =400x)')[0]
 
                 self.images[i].update({curShopName:[curShopUrl, curShopTag]})
-            
             
     def reload(self):
         self.pull()
@@ -113,45 +119,77 @@ class MD:
             ret += i + '\n'
         self.text = ret
 
-    def push(self):
-        write(self.filename, self.text)
+    def push(self, local = False, auto = False, manual = False, hackmd = False, admin = False):
+        if local:
+            write(self.filename, self.text)
+        if auto:
+            write('filename_auto_back_up.txt', self.text)
+        if manual:
+            write('filename_back_up.txt', self.text)
+        if hackmd:
+            pass
+        if admin:
+            pass
+
 
     def backup(self):
         pass
 
     def restore(self):
         pass
-
-    # 方法(Method)
-    def setfilename(self, filename='filename.txt'):
-        self.filename = filename
-
-    def getfilename(self):
-        return self.filename
-
+    
+    
+    # Shop:
     def getshops(self):
         return self.shops
 
-    def add(self, category, shopname, menus, updateNow = True, pushNow = False):
-        self.shops[classMap[category]-2].append(shopname)
-        self.images[classMap[category]-2].update({shopname:[menus, []]})
-        if updateNow:
-            self.updateIndex()
-            self.updateMenus()
-            self.updateText()
-            if pushNow:
-                self.push()
-    
-    def delete(self, category, shopname, updateNow = True, pushNow = False):
-        self.shops[classMap[category]-2].remove(shopname)
-        del self.images[classMap[category]-2][shopname]
-        if updateNow:
-            self.updateIndex()
-            self.updateMenus()
+    def getshops(self):   # return a list including all shops
+        return self.shops
 
+    # Menu:
+    def editMenu(self, category, shopname, newMenus, newtag=[], updateNow = True, pushNow = False):
+        self.images[classMap[category]-2].update({shopname: [newMenus, newtag] })
+        if updateNow:
+            self.updateMenus()
             self.updateText()
             if pushNow:
-                self.push()
+                self.push(local=True)
+        print(self.text)
+        pass        
+    
+    def getMenu(self, shopname):  # return a list including all links to shopname
+        for i in self.images:
+            if shopname in i:
+                return i[shopname][0]
+        return []
+
+    # Tag: 
+    def getTag(self, shopname): # retun list of tags to a shop
+        for i in self.images:
+            if shopname in i:
+                return i[shopname][1]
+        return []    
+    
+
+    def editTag(self, shopname, tags):  # no return now
+        write('filename_auto_back_up.txt', self.text)
+        classification = ''
+        for i in range(len(self.shops)):
+            if shopname in self.shops[i]:
+                classification = anti_classMap[i+2]
+        if classification !='':
+            self.editMenu(classification, shopname, self.getMenu(shopname), newtag=tags, pushNow=True)
+
+    # about more than two variable: 
+    def add(self, category, shopname, menus=[], tag=[], updateNow = True, pushNow = False):
+        self.shops[classMap[category]-2].append(shopname)
+        self.images[classMap[category]-2].update({shopname:[menus, tag]})
+        if updateNow:
+            self.updateIndex()
+            self.updateMenus()
+            self.updateText()
+            if pushNow:
+                self.push(local=True)
     
     def editName(self, category, oldName, newName, updateNow = True, pushNow = False):
         for i in range(len(self.shops[classMap[category]-2])):
@@ -166,16 +204,25 @@ class MD:
             self.updateMenus()
             self.updateText()
             if pushNow:
-                self.push()
+                self.push(local=True)
         print(self.text)
     
-    def editMenu(self, category, shopname, newMenus, updateNow = True, pushNow = False):
-        self.images[classMap[category]-2].update({shopname: [newMenus, []] })
+    def delete(self, category, shopname, updateNow = True, pushNow = False):
+        self.shops[classMap[category]-2].remove(shopname)
+        del self.images[classMap[category]-2][shopname]
         if updateNow:
+            self.updateIndex()
             self.updateMenus()
+
             self.updateText()
             if pushNow:
-                self.push()
-        print(self.text)
-        pass
+                self.push(local=True)
     
+
+
+    # Other: 
+    def getCategory(self, shopname):
+        for i in range(len(self.shops)):
+            if shopname in self.shops[i]:
+                return anti_classMap[i+2]
+        return None

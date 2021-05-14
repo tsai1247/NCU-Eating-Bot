@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 from functions.checkpermission import checkpermission
-from functions.fileRW import write
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
-from functions.interact_with_hackmd import getcode
 from functions.variable import *
 import threading
 
@@ -21,7 +19,8 @@ class thread_backup(threading.Thread):
         if isDos(update): return
         if(not checkpermission(update)):   return
 
-        write("filename_back_up.txt", getcode())
+        curMD.push(manual=True)
+
         update.message.reply_text(
             "手動備份完成"
         )
