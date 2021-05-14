@@ -1,3 +1,4 @@
+import platform, os
 from functions.fileRW import *
 
 classMap = {'宵夜街':2, '後門':3, '奢侈街':4, '山下':5, '校內':6}
@@ -127,7 +128,14 @@ class MD:
         if manual:
             write('filename_back_up.txt', self.text)
         if hackmd:
-            pass
+            print('overwritting,', platform.system())
+            if platform.system() == 'Windows':
+                command = "modules\\hackmd-overwriter\\bin\\overwrite.cmd " + os.getenv("MD_SOURCE") + ' ' + self.filename
+            else:
+                command = "modules/hackmd-overwriter/bin/overwrite " + os.getenv("MD_SOURCE") + ' ' + self.filename
+            print(command)
+            os.system(command)
+
         if admin:
             pass
 

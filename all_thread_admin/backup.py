@@ -19,7 +19,8 @@ class thread_backup(threading.Thread):
         if isDos(update): return
         if(not checkpermission(update)):   return
 
-        curMD.push(manual=True)
+        update.message.reply_text("備份中...")
+        curMD.push(manual=True, hackmd=True)
 
         update.message.reply_text(
             "手動備份完成"

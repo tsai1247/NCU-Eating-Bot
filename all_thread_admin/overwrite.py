@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding=UTF-8
 # from functions.code_compare import comapreCode
-from functions.overwrite import overwrite
+import requests
 from functions.checkpermission import checkpermission
 from functions.appendlog import appendlog
 from functions.dosdefence import getID, isDos
@@ -21,34 +21,14 @@ class thread_overwrite(threading.Thread):
         if isDos(update): return
         if(not checkpermission(update)):   return
 
-        textlist = update.message.text.split()
-        if len(textlist)==1:    # /overwrite
-            textlist.append('filename.txt')
-            textlist.append('1')
-        elif len(textlist)==2:    # /overwrite filename  | /overwrite num
-            if textlist[1].isnumeric():     # /overwrite num
-                textlist.append(textlist[1])
-                textlist[1] = 'filename.txt'
-            else:
-                if '.' not in textlist[1]:    # /overwrite filename
-                    textlist[1] += '.txt'
-                textlist.append('1')
-        elif len(textlist)==3:    # /overwrite filename num
-            if '.' not in textlist[1]:    # /overwrite filename
-                textlist[1] += '.txt'
-                
-        else:
-            update.message.reply_text('格式錯誤，請輸入 /overwrite 檔案名稱=filename.txt 執行次數=1')
-            return
+        update.message.reply_text('備份中...')
 
-        for i in range(int(textlist[2])):
-            update.message.reply_text('try overwriting with {}, {} time(s).'.format(textlist[1], i+1))
-            overwrite(textlist[1])
-            # if comapreCode():
-            #     update.message.reply_text('上傳成功')
-            #     break
-            # else:
-            #     update.message.reply_text('上傳失敗')
-            #     break
+        curMD.push(hackmd=True)
+        
+        if curMD.text == requests.get('https://hackmd.io/Tz5EFYy-T-Sp9LqpvJkGLg').text.split('<div id="doc" class="markdown-body container-fluid" data-hard-breaks="true">')[1].split('</div>')[0]:
+            update.message.reply_text('備份成功')
+        else:
+            update.message.reply_text('備份失敗')
+            
 
         appendlog(getID(update), update.message.from_user.full_name, update.message.text)
