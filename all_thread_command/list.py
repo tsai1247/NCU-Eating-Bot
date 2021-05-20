@@ -23,7 +23,7 @@ class thread_list(threading.Thread):
         status.update({chat_id:'random'})
         add_query_update.update({chat_id:update})
         classlist = list(classMap.keys())
-        classlist.append('無')
+        classlist.append('all')
         update.message.reply_text("有什麼要求嗎？",
             reply_markup = InlineKeyboardMarkup([
                 [InlineKeyboardButton(s, callback_data = '{} {} {}'.format(s, chat_id, 3)) for s in classlist[0::2]],
