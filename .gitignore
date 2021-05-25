@@ -1,5 +1,12 @@
-.env
+__pycache__/
+modules/
+
 filename*.txt
-non-exist-shop.txt
-.png
 *.lock
+.env
+
+non-exist-shop.txt
+imagesource.txt
+logger.txt
+tmpphoto.png
+user_report.txt
