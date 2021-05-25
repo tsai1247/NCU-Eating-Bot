@@ -118,7 +118,7 @@ class MD:
         # print('-------')
         for i in self.menus:
             ret += i + '\n'
-        self.text = ret
+        self.text = ret[:-1]
 
     def push(self, local = False, auto = False, manual = False, hackmd = False, admin = False):
         if local:

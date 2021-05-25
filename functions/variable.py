@@ -20,7 +20,7 @@ add_query_photo_lock = {}
 ignore_list = [' ', '\n', '\t']
 
 # variable about dos defence
-dos_maximum = 25
+dos_maximum = 10
 penalty = 300
 dos_defence= {}
 
