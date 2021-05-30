@@ -41,7 +41,7 @@ jobs:
           pipenv run python -m compileall .
 
       - name: Deploy
-        uses: ./
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER }}
           username: ${{ secrets.ACCOUNT }}
