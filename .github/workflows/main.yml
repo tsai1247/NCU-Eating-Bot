@@ -36,11 +36,18 @@ jobs:
           pipenv install
           cp filename.txt.example filename.txt
 
-      - name: Test
+      - name: Test code
         run: |
           pipenv run python -m compileall .
 
-      - name: Deploy
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER }}
