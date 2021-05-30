@@ -38,7 +38,7 @@ jobs:
 
       - name: Test
         run: |
-          pipenv run python main.py
+          pipenv run python -m compileall .
 
       - name: Deploy
         uses: ./
