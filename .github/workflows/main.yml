@@ -36,7 +36,7 @@ jobs:
 
       - name: Setup environment
         run: |          
-          pipenv install --dev -e .
+          pipenv install --dev
           cp filename.txt.example filename.txt
 
       - name: Test code
