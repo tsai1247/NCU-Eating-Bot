@@ -10,6 +10,10 @@ requests = "*"
 pyimgur = "*"
 
 [dev-packages]
+pytest = "*"
+pyrogram = "*"
+tgcrypto = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.9"

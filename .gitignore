@@ -1,9 +1,9 @@
 __pycache__/
-modules/
 
 filename*.txt
 *.lock
 .env
+.coverage
 
 non-exist-shop.txt
 imagesource.txt

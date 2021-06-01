@@ -17,6 +17,9 @@ jobs:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
       DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
+      API_ID: ${{ secrets.API_ID }}
+      API_HASH: ${{ secrets.API_HASH }}
+      TG_SESSION: ${{ secrets.TG_SESSION }}
 
     steps:
       - name: Check out repository code
@@ -33,12 +36,16 @@ jobs:
 
       - name: Setup environment
         run: |          
-          pipenv install
+          pipenv install --dev -e .
           cp filename.txt.example filename.txt
 
       - name: Test code
         run: |
           pipenv run python -m compileall .
+
+      - name: Run Test
+        run: |
+          pipenv run pytest --cov-config=.coveragerc --cov=./ tests/
 
   deploy:
     runs-on: ubuntu-latest
